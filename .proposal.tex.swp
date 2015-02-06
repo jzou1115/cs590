@@ -1,0 +1,39 @@
+\documentclass[11pt]{article}
+\usepackage{enumitem}
+%Gummi|065|=)
+\title{\textbf{Accurate Approximations for Global Minimum Energy Conformation}}
+\author{Adi Mukund\\
+		Jennifer Zou}
+\date{}
+\begin{document}
+
+\maketitle
+
+\section{Context}
+\par Algorithms such as dead-end elimination (DEE) and A* can use a rotamer library and a fixed protein backbone to determine the global minimum energy conformation (GMEC).  However, even when rotamers inconsistent with the GMEC solution are pruned from the search space, the problem of assigning rotamers is NP-hard.  Additionally, provable algorithms often output a single sequence and cannot determine low-energy sequences near the GMEC.  
+
+\par Probabilistic models of protein design assign a probability distribution for rotamers in each position of the protein sequence.  In algorithms such as Belief Propagation (BP), the beliefs or the approximate marginal probabilities of each rotamer are computed iteratively.  These approximations are computationally less intense, but they are not always provably accurate.  Furthermore, such algorithms are only guaranteed to converge on tree graphs, which are not commonly observed in natural proteins. \footnote{M. Fromer, C. Yanover, and M. Linial.  Design of multispecific protein sequences using probabilistic graphical modeling. Proteins 75;3(2009 May 15):682-705.}
+
+
+\section{Goals}
+\subsection{Provably Convergent Belief Propagation}
+In order to create a provably convergent belief propagation algorithm, we hope to remove cycles from sparse residue interaction graphs. (When we collapse a node) The following are several ideas that we plan to try.
+\begin{enumerate}[label=\roman*]
+\item Use graph cuts and properties of planarity
+\item Continually sparsify the graphs until they converge on standard belief propagation algorithms.  establish error bounds, enumerate all conformations within that bound, return full GMEC
+\item see if there are any provably convergent generalized belief propagation algorithms that operate on loopy graphs and apply them to protein design problems - perhaps residue graphs are frequently within a class of graph that can be provably solved?
+\end{enumerate}
+
+\subsection{Machine Learning Models of Protein Stability}
+\par When creating sparse residue interaction graphs, assumptions must be made about which interactions to include.  These assumptions are usually made with distance or energy cutoffs, which may be biased.  Furthermore, many energy functions assume that entropy is negligible.\footnote{Silver, N.W. King, B.M. Nalam, M.N. Cao, H. Ali, A. Kiran Kumar Reddy, G.S. Rana, T.M. Schiffer, C.A. Tidor, B.
+Efficient Computation of Small-Molecule Configurational Binding Entropy and Free Energy Changes by Ensemble Enumeration. J Chem Theory Comput 9, 5098-5115 (2013).}  While a machine learning method would not directly calculate entropy, it may learn to incorporate some of the effects of entropy.  
+
+\par Using protein sequence and thermodynamic data from the Protein Data Bank (PDB), we hope to train energy functions using sequence characteristics. A model such as a neural network may also be able to capture nonlinear relationships between certain sequence characteristics and energy.
+
+\subsection{Algorithm Assessment}
+Once we have implemented our approximation algorithms, we would like to test them for accuracy and compare the results to known algorithms.  We would also like to test the effectiveness of the algorithms different protein families and for different regions of proteins.  This will allow us to assess whether certain algorithms are better for certain types of structures.
+
+
+
+
+\end{document}
