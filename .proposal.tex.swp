@@ -1,39 +1,103 @@
 \documentclass[11pt]{article}
-\usepackage{enumitem}
-%Gummi|065|=)
-\title{\textbf{Accurate Approximations for Global Minimum Energy Conformation}}
-\author{Adi Mukund\\
-		Jennifer Zou}
+
+\usepackage{amsmath, amssymb}
+
+\title{\textbf{Graph-Based Representations of the Protein Design Problem}}
+\author{Adi Mukund \and Jennifer Zou}
 \date{}
+
 \begin{document}
 
-\maketitle
+\maketitle	
 
 \section{Context}
-\par Algorithms such as dead-end elimination (DEE) and A* can use a rotamer library and a fixed protein backbone to determine the global minimum energy conformation (GMEC).  However, even when rotamers inconsistent with the GMEC solution are pruned from the search space, the problem of assigning rotamers is NP-hard.  Additionally, provable algorithms often output a single sequence and cannot determine low-energy sequences near the GMEC.  
 
-\par Probabilistic models of protein design assign a probability distribution for rotamers in each position of the protein sequence.  In algorithms such as Belief Propagation (BP), the beliefs or the approximate marginal probabilities of each rotamer are computed iteratively.  These approximations are computationally less intense, but they are not always provably accurate.  Furthermore, such algorithms are only guaranteed to converge on tree graphs, which are not commonly observed in natural proteins. \footnote{M. Fromer, C. Yanover, and M. Linial.  Design of multispecific protein sequences using probabilistic graphical modeling. Proteins 75;3(2009 May 15):682-705.}
+The protein design problem can be described as follows. Given a set of backbone coordinates $\mathbf{c} = (\vec{c_1}, \vec{c_2 }, \dots, \vec{c_n})$ and rotamer library $R$ of length $r$, identify the optimal rotamer assignment sequence $\vec{r} = (r_1, r_2,\dots, r_n)$, $r_i \in R$, $1 \leq i \leq n$ according to an energy function $E(\vec{r})$. This assignment sequence is known as the global
+minimum energy conformation (GMEC). This problem has been proven to be NP-hard
+\cite{PW02}, and algorithms such as DEE \cite{BD97} have been created to allow for
+combinatorial pruning of the residue search space and make the design problem
+computationally tractable. However, such algorithms cannot guarantee a time 
+complexity less than the worst-case $O(nr^n)$. 
 
+Recent graph based algorithms such as BWM* \cite{DJJG15} use sparse residue 
+interaction graphs in order to more efficiently compute functions over the residue
+space and identify optimal assignments more rapidly. Such graph-based algorithms
+have been able to achieve combinatorial speedups while maintaining provable
+accuracy and returning ensemble of minimum energy conformations. 
+
+Probabilistic models of protein design assign a probability distribution 
+for rotamers in each position of the protein sequence.  In algorithms such as
+belief propagation, the beliefs or the approximate marginal probabilities
+of each rotamer are computed iteratively.  These approximations are computationally
+less intense, but they are not always provably accurate \cite{KLX08}. Furthermore,
+such algorithms are only guaranteed to converge on tree graphs, which are not
+commonly observed in natural proteins \cite{FLY09}. 
 
 \section{Goals}
-\subsection{Provably Convergent Belief Propagation}
-In order to create a provably convergent belief propagation algorithm, we hope to remove cycles from sparse residue interaction graphs. (When we collapse a node) The following are several ideas that we plan to try.
-\begin{enumerate}[label=\roman*]
-\item Use graph cuts and properties of planarity
-\item Continually sparsify the graphs until they converge on standard belief propagation algorithms.  establish error bounds, enumerate all conformations within that bound, return full GMEC
-\item see if there are any provably convergent generalized belief propagation algorithms that operate on loopy graphs and apply them to protein design problems - perhaps residue graphs are frequently within a class of graph that can be provably solved?
+
+\subsection{Provable Convergence}
+
+The project will attempt to develop provably accurate algorithms utilizing
+belief propagation and graph cuts on sparse residue interaction graphs to solve
+the protein design problem. The major obstacle will be maintaining provable
+convergence in the presence of loops in the sparse graph. We will attempt to do
+this by:
+
+\begin{enumerate}
+	\item Using graph cuts and dynamic programming in order to treat loops within
+	the residue graphs as subproblems and maintain provable accuracy. 
+	
+	\item Continually pruning edges until the graph is sufficiently sparse, 
+	maintaining an error bound in order to see the maximum difference $\epsilon$
+	in energy between the full GMEC and sparse GMEC, and enumerating all low-
+	energy conformations produced by the sparse interaction graph within $\epsilon$
+	of the sparse GMEC.  
+	
+	\item Attempting to find generalized belief propagation algorithms that provably
+	converge on graphs that contain loops, and applying those algorithms to the
+	protein design problem.
+	
+	\item Investigating other properties of the sparse residue interaction graph
+	such as planarity and seeing if these allow for provably accurate algorithms.
 \end{enumerate}
 
 \subsection{Machine Learning Models of Protein Stability}
-\par When creating sparse residue interaction graphs, assumptions must be made about which interactions to include.  These assumptions are usually made with distance or energy cutoffs, which may be biased.  Furthermore, many energy functions assume that entropy is negligible.\footnote{Silver, N.W. King, B.M. Nalam, M.N. Cao, H. Ali, A. Kiran Kumar Reddy, G.S. Rana, T.M. Schiffer, C.A. Tidor, B.
-Efficient Computation of Small-Molecule Configurational Binding Entropy and Free Energy Changes by Ensemble Enumeration. J Chem Theory Comput 9, 5098-5115 (2013).}  While a machine learning method would not directly calculate entropy, it may learn to incorporate some of the effects of entropy.  
+We hope to train energy functions in order to
+improve the speed of residue-assignment algorithms. Current energy
+functions include pairwise terms and are frequently slow enough that running them on a large number of possible conformations is impossible; machine learning models could yield significant speed improvements. 
 
-\par Using protein sequence and thermodynamic data from the Protein Data Bank (PDB), we hope to train energy functions using sequence characteristics. A model such as a neural network may also be able to capture nonlinear relationships between certain sequence characteristics and energy.
+Machine learning methods may also increase accuracy of residue-assignment algorithms.  When creating sparse residue interaction graphs, assumptions must be made about which interactions to include.  These assumptions are usually made with distance or energy cutoffs, which may be biased.  Furthermore, many energy functions do not include terms for entropy, which can decrease the accuracy of residue assignment algorithms \cite{SKNCAKRST13}. By training directly with free energy data, these issues may be addressed.
 
-\subsection{Algorithm Assessment}
-Once we have implemented our approximation algorithms, we would like to test them for accuracy and compare the results to known algorithms.  We would also like to test the effectiveness of the algorithms different protein families and for different regions of proteins.  This will allow us to assess whether certain algorithms are better for certain types of structures.
+Using protein sequence and thermodynamic data from the Protein Data Bank and ProTherm datavases, we hope to train energy functions to predict energies of novel sequences. A model such as a neural network may be ideal due to its flexibility and ability to capture nonlinear relationships.
 
 
+\subsection{Test Accuracy}
+
+Once we have implemented our approximation algorithms, we would like to test them for accuracy and compare the results to known algorithms.  We would also like to test the effectiveness of the algorithms different protein families and for different regions (surface, boundary, and core) of proteins.  This will allow us to assess whether certain algorithms are better for certain types of structures.
+
+\begin{thebibliography}{99}
+	\bibitem{PW02} Pierce, Niles A. and Winfree, Erik. Protein Design is NP-hard 
+	Protein Eng. (2002) 15 (10): 779-782 doi:10.1093/protein/15.10.779
+	
+	\bibitem{BD97} Dahiyat, B. I. De Novo Protein Design: Fully Automated Sequence
+	Selection. Science 278, 82-87 (1997)
+	
+	\bibitem{DJJG15} Jou, J.D. Jain, S. Georgiev, I. Donald, B.R. BWM*: A Novel,
+	Provable, Ensemble-based Dynamic Programming Algorithm for Sparse 
+	Approximations of Computational Protein Design. RECOMB (2015) Warsaw, Poland.
+	April 12, 2015 (In Press)
+	
+	\bibitem{KLX08} Kamisetty H1, Xing EP, Langmead CJ. Free energy estimates of
+	all-atom protein structures using generalized belief propagation. J Comput
+	Biol. 2008 Sep;15(7):755-66. doi: 10.1089/cmb.2007.0131.
+	
+	\bibitem{FLY09} M. Fromer, C. Yanover, and M. Linial. Design of multispecific
+	protein sequences using probabilistic graphical modeling. Proteins 75;3(2009
+	May 15):682-705.
+	
+	\bibitem{SKNCAKRST13} Silver, N.W. King, B.M. Nalam, M.N. Cao, H. Ali, A. Kiran Kumar Reddy, G.S. Rana, T.M. Schiffer, C.A. Tidor, B. Efficient Computation of Small-Molecule Configurational Binding Entropy and Free Energy Changes by Ensemble Enumeration. J Chem Theory Comput 9, 5098-5115 (2013).
+
+\end{thebibliography}
 
 
 \end{document}
