@@ -21,7 +21,7 @@
 	
 	\section{Graph Labeling}
 	
-	The graph-cut formulation of the protein design problem represents the set
+	The graph-label formulation of the protein design problem represents the set
 	of all residues as a sparse interaction graph, a modification of the residue
 	interaction graph $G = (V, \mathcal{E})$ in which each vertex represents a
 	protein residue and each edge represents an interaction between two such
@@ -37,24 +37,75 @@
 	vertex in $V^*$ is connected to exactly 1 vertex in $V_r$ (that is, until 
 	every member of $V^*$ is represented in $\mathcal{E}_r$ exactly once) in
 	order to generate a labeling for the $G$ where each vertex in $V^*$ is 
-	connected to a vertex in $V_r$ representing its optimal rotameric assignment. 
+	connected to a vertex in $V_r$ representing its optimal rotameric assignment.  
 	
-	The energy of the graph can then be computed by finding
+	Given a function $\phi(v, r_v)$ that returns the cost of assigning label $r_v$
+	to vertex $v$ and a function $\psi(v, r_v, w, r_w)$ that returns the pairwise
+	interaction between residues $v$ and $w$ when assigned labels $r_v$ and $r_w$
+	respectively, the energy of the graph (and associated rotamer assignment 
+	sequence) can be computed as follows:
+	
+	The energy of the graph can then be computed by finding the sum over the rotamers 
+	$v,w\in V^*$ where $w > v$ and their associated labels $r_v$ and $r_w$ as
+	follows:
+	
 	\begin{equation} \label{e_g}
 	    E_G = 
-	    \sum\limits_{r \in V_r} \sum\limits_{v \in V^*} \phi(r,v) +
-	    \sum\limits_{v \in V^*} \sum\limits_{\substack{w \in V^* \\ w \neq v}} \psi(v,w)
-	\end{equation}
-	where $\phi(r,v)$ represents the cost of assigning label $r$ to vertex $v$
-	(intuitively, the internal energy of residue $v$ when assigned rotamer $r$)
-	and $\psi(v,w)$ represents the pairwise interaction between vertices $v$ and
-	$w$ given an initial labeling.	
+	    \sum\limits_{v} \phi(v, r_v) + 
+	    \sum\limits_{v} \sum\limits_{w > v} \psi(v,r_v, w, r_w)
+	   \end{equation}
 	
 	Thus, finding the GMEC is equivalent to minimizing equation \ref{e_g}
-	over the set $\mathcal{L}$ of all possible labelings. 
+	over the set of all possible labelings of $G_l$. 
 	
-	\section{ILP Transformation}
+	\section{Approximate Labeling based on Linear Programming}
 	
-	\section{Approximation Bounds}
+	\textit{Note: This section is based on the paper ``Approximate Labeling via
+		Graph Cuts Based on Linear Programming'' by Komodakis and Tziritas.}
+	
+	\subsection{Metric Labeling}
+	
+	The Metric Labeling (ML) problem can be stated as follows: classify a set 
+	$\mathcal{V}$ of $n$ objects by assigning to each object a label from a given
+	set $\mathcal{L}$ of labels, given a weighted graph
+	$\mathcal{G}=(\mathcal{V},\mathcal{E},w)$. For each $p \in \mathcal{V}$ there
+	is a label cost $\textbf{c}_{p}(a) \geq 0$ for assigning the label $a=f_p$ to
+	$p$, and for every edge $pq$ there is a pairwise cost
+	$\textbf{c}_{pq}(a,b) =  w_{pq}d_{pq}(ab)$ where $d_{pq}(ab)$ is the distance
+	between (or cost of) label $a$ on vertex $p$ and $b$ on vertex $q$. Thus,
+	the cost of a labeling $f$ is as follows:
+	
+	\begin{equation} \label{k_cost}
+	    \text{COST}(f) = 
+	    \sum\limits_{p \in \mathcal{V}} \textbf{c}_{p}(f_p) + 
+	    \sum\limits_{(p,q) \in \mathcal{E}} w_{pq}d_{pq}(f_p,f_q)
+	   \end{equation}
+
+	\subsection{The Primal-Dual Schema}
+	
+	Given the primal program $\{\min{\textbf{c}^{T}\textbf{x}} \mid \textbf{Ax}=
+	\textbf{b}, \textbf{x}\geq 0\}$ it is possible to formulate the dual program
+	$\{\max{\textbf{b}^{T}\textbf{y}} \mid \textbf{A}^T\textbf{y} \leq \textbf{c}\}$.
+	The primal-dual principle states that if 
+	$\textbf{c}^T\textbf{x} \leq f \cdot \textbf{b}^T\textbf{y}$, then \textbf{x}
+	is an $f$ -approximation to the optimal integral solution 
+	$\textbf{x}^{\text{*}}$, that is, 
+	$\textbf{c}^T\textbf{x}^\text{*} \leq \textbf{c}^T\textbf{x} \leq 
+        	f \cdot \textbf{c}^T\textbf{x}^\text{*}$. 
+        	
+    The Primal-Dual Schema is to keep generating pairs of primal and dual solutions
+   	$\{ ( \textbf{x}^k, \textbf{y}^k ) \}_{k=1}^{t} $ until the pair
+   	$(\textbf{x}^t, \textbf{y}^t)$ are both feasible and satisfy the relaxed
+   	primal complementary slackness conditions. 
+    
+    Some shenanigans then occur, and I have no idea how it all works, but it seems
+    that a (roughly) 1.4-approximation can be found. It might be useful to 
+    implement this and see if we get better results empirically. 
+    	
+	\section{A* all the things}
+	
+	Just A* over the cut space - maintain a sorted list of partial cuts, 
+	expanding until we get the best cut. This also guarantees ensemble 
+	enumeration! Though really this is pretty pointless.
 
 \end{document}
