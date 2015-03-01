@@ -63,9 +63,9 @@
 	\textit{Note: This section is based on the paper ``Approximate Labeling via
 		Graph Cuts Based on Linear Programming'' by Komodakis and Tziritas.}
 	
-	\subsection{Metric Labeling}
+	\subsection{Labeling}
 	
-	The Metric Labeling (ML) problem can be stated as follows: classify a set 
+	The Graph Labeling (GL) problem can be stated as follows: classify a set 
 	$\mathcal{V}$ of $n$ objects by assigning to each object a label from a given
 	set $\mathcal{L}$ of labels, given a weighted graph
 	$\mathcal{G}=(\mathcal{V},\mathcal{E},w)$. For each $p \in \mathcal{V}$ there
@@ -81,31 +81,32 @@
 	    \sum\limits_{(p,q) \in \mathcal{E}} w_{pq}d_{pq}(f_p,f_q)
 	   \end{equation}
 
-	\subsection{The Primal-Dual Schema}
-	
-	Given the primal program $\{\min{\textbf{c}^{T}\textbf{x}} \mid \textbf{Ax}=
-	\textbf{b}, \textbf{x}\geq 0\}$ it is possible to formulate the dual program
-	$\{\max{\textbf{b}^{T}\textbf{y}} \mid \textbf{A}^T\textbf{y} \leq \textbf{c}\}$.
-	The primal-dual principle states that if 
-	$\textbf{c}^T\textbf{x} \leq f \cdot \textbf{b}^T\textbf{y}$, then \textbf{x}
-	is an $f$ -approximation to the optimal integral solution 
-	$\textbf{x}^{\text{*}}$, that is, 
-	$\textbf{c}^T\textbf{x}^\text{*} \leq \textbf{c}^T\textbf{x} \leq 
-        	f \cdot \textbf{c}^T\textbf{x}^\text{*}$. 
-        	
-    The Primal-Dual Schema is to keep generating pairs of primal and dual solutions
-   	$\{ ( \textbf{x}^k, \textbf{y}^k ) \}_{k=1}^{t} $ until the pair
-   	$(\textbf{x}^t, \textbf{y}^t)$ are both feasible and satisfy the relaxed
-   	primal complementary slackness conditions. 
-    
-    Some shenanigans then occur, and I have no idea how it all works, but it seems
-    that a (roughly) 1.4-approximation can be found. It might be useful to 
-    implement this and see if we get better results empirically. 
     	
-	\section{A* all the things}
+	\subsection{Conversion to a Metric Labeling Schema}
 	
-	Just A* over the cut space - maintain a sorted list of partial cuts, 
-	expanding until we get the best cut. This also guarantees ensemble 
-	enumeration! Though really this is pretty pointless.
+	The Metric Labeling problem requires the distance function $d(a,b)$ to 
+	be a metric; otherwise it is identical to the GL problem described above.
+	This imposes three constraints:
+	
+	\begin{enumerate}
+		\item $d(a,b) = 0 \iff a=b$
+		\item $d(a,b) = d(b,a) \geq 0$
+		\item $d(a,b) \leq d(a,c) + d(c,b)$
+	\end{enumerate} 
+	
+	The first constraint can be achieved by letting the label set $\mathcal{L}$
+	be the set of all residues over all rotamers, that is, each $l \in \mathcal{L}$
+	is not just a particular rotamer but a particular rotamer \textit{at} a 
+	particular residue. Thus, allowing $d(a,b) = 0$ is admissible, as such a
+	pairwise assignment can be avoided by setting the internal potential for 
+	assigning a rotamer to the wrong residue equal to infinity. The second is
+	easily seen to be true from this definition. 
+		
+	The third constraint can be ignored based on the Komodakis/Tziritas paper, as
+	it is not possible to ensure that it is true. For example, if $a$ and $b$ 
+	involve significant steric clash, but $a$ and $c$ and $b$ and $c$ do not
+	then $d(a,b)$ will be greater than $d(a,c) + d(c,b)$.   
+	
+	 
 
 \end{document}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.1.26)  25 FEB 2015 21:41
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.1.26)  1 MAR 2015 12:44
 entering extended mode
 **graphcuts.tex
 ("C:\Users\Aditya Mukund\Documents\GitHub\cs590\graph cuts\paper\graphcuts.tex"
@@ -133,7 +133,7 @@ Overfull \hbox (4.61461pt too wide) in paragraph at lines 61--61
 Here is how much of TeX's memory you used:
  1138 strings out of 493921
  13123 string characters out of 3144852
- 65664 words of memory out of 3000000
+ 64664 words of memory out of 3000000
  4467 multiletter control sequences out of 15000+200000
  12626 words of font info for 47 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
@@ -149,7 +149,7 @@ les (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files
 (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files (x
 86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files (x86)
 /MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on graphcuts.pdf (3 pages, 136392 bytes).
+Output written on graphcuts.pdf (3 pages, 131708 bytes).
 PDF statistics:
  56 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
