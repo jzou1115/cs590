@@ -1,0 +1,3 @@
+All third-party libraries belong to their creators.  See http://www.joptimizer.com/ for more information--the libraries included here are JOptimizer and its dependencies
+
+To use these libraries with OSPREY, just add the jars to your classpath

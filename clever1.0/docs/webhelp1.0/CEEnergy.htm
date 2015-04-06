@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+  
+  <link rel="stylesheet" type="text/css" href="style.css"><title>CLEVER-CEEnergy</title></head><body>
+<h1> CEEnergy </h1>
+
+<h2>CEEnergy calculates energies of sequences using an energy estimator
+previously trained with the cluster expansion method. The number of
+amino acids in a provided sequence should be equal to the number of
+design sites.
+</h2>
+
+<h2 class="nolinespace"><span style="font-style: italic;">Usage</span>
+: CEEnergy [OPTIONS]</h2>
+
+<h3> <i>ex</i>) <br>
+CEEnergy -l output.file -r training.result -s sequence.file <br>
+CEEnergy -l output.file -r training.result -u "C D E A ..." <br>
+</h3>
+
+<h2 class="nolinespace"> REQUIRED OPTIONS </h2>
+
+<li><i>-r [training result]</i>: results file containing energy
+estimator trained using CE method (dubbed trained CE)</li>
+
+<li><i>-s [sequence file]</i>: set of sequences for which to evaluate
+energy. Length of sequence should be equal to the number of design
+sites in trained CE.&nbsp; <span style="font-style: italic; font-weight: bold;">Either of the options, "s" or "u", must be designated.</span>
+</li>
+
+<li><i>-u "single sequence"</i>: user can input a single sequence
+instead of a sequence file. Length of sequence should be equal to the
+number of design sites in trained CE </li>
+
+<h2 class="nolinespace"> OTHER OPTIONS </h2>
+
+<ul>
+
+  <li><i>-l [output file]</i> : file name for standard output</li>
+  <li><i>-k</i> : this option executes a routine which checks whether
+the sequence contains any of the eliminated CFs. If the sequence
+contains any eliminated CF/CFs then sequence energy is marked as
+"NONE". (default is to skip this checking routine).<br>
+  </li>
+  <li><i>-i [num]</i> : print energy information <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [num=0]: print
+only predicted energy (CeEn) (default)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; [num=1]: print real energy
+(ReEn, if in the sequence file the user listed the structue-derived or
+experimentally-derived energy) and predicted energy (CeEn)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; [num=2]: print real energy
+(ReEn), predicted energy (CeEn), energy difference (EnDiff=ReEn-CeEn),
+and scaled energy difference (ScEnDiff)</li>
+  <li><i> -p</i> : turn off rapid calculation mode (reducing memory
+requirement)</li>
+  <li><i> -c</i> : print sequence information</li>
+  <li><i> -d</i> : print design information</li>
+  <li><i> -h</i> : display this help and exit</li>
+  <li><i> -h sequence</i> : display an example of a sequence file</li>
+</ul><span lang="EN-US"><a href="main.htm"><img style="border: 0px solid ; width: 129px; height: 50px;" alt="" src="home.jpg"></a></span>
+
+</body></html>

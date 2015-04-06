@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+<link rel="stylesheet" type="text/css" href="style.css"><title>Sequence file</title></head><body> 
+<h1>  
+Sequence file
+</h1>
+<h2 align="justify"> Each sequence file lists a set of sequences that
+can be used to either train an energy estimator using cluster
+expansion, or to test an already trained energy estimator. Sequence
+files can be created manually, or by using a design file and the <a href="GenSeq.htm" onmouseover="window.status='insert link description here'; return true" onmouseout="window.status=''; return true">
+        GenSeq</a> module. To train an energy estimator using CE (with <a href="CETrFile.htm" onmouseover="window.status='insert link description here'; return true" onmouseout="window.status=''; return true">
+        CETrFile</a>),
+the energies of the associated sequences must be calculated beforehand
+and placed in the sequence file. To evaluate the energies of new
+sequences, input the sequence file to the <a href="CEEnergy.htm" onmouseover="window.status='insert link description here'; return true" onmouseout="window.status=''; return true">
+	    CEEnergy</a>
+module. The sequence file contains a list of {energy, sequence} data. A
+line in this file contains a sequence and its corresponding protein
+energy (or other sequence-related property). Each line starts with the
+protein energy, and then the amino acids at each design site in the
+sequence separated by a space character. Number of amino acids and
+their order should correspond to the number of design sites and their
+order. If the sequence is to be evaluated as part of a test set, set
+the energy to 0. For guidelines on training set size versus number of
+clustersto be included in training, see Hahn et al. 2010.
+
+ </h2>
+<h2 class="nolinespace"> ex) sequence file<br> </h2>
+<h3>
+-197.000   S L T S K T N F A A A S I S L V K S E I<br>
+-213.400   K T Q Y K T E S T S S T Q T A N F A E A<br>
+-198.300   M S Q I S K T L M K A T V V D N L D V M</h3><span lang="EN-US"><a href="main.htm"><img style="border: 0px solid ; width: 129px; height: 50px;" alt="" src="home.jpg"></a></span><br>
+<br>
+
+
+</body></html>

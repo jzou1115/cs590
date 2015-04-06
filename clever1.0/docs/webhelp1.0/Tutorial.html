@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Tutorial</title></head><body><big><big style="font-weight: bold;">Cluster Expansion Tutorial</big><br>
+<br>
+In this tutorial, we will train and test an energy estimator for
+energies of dimeric coiled coils using cluster expansion. For details
+on coiled-coil structure, please see the accompanying paper. Read
+through the documentation before running this tutorial. <br>
+<br>
+Go to the <span style="font-style: italic;">clever1.0/test/tutorial</span> directory, where the following tutorial files are provided: <br>
+<span style="font-style: italic;">coiled_coil_design.dat</span><br style="font-style: italic;">
+<span style="font-style: italic;">train3000.seq<br>
+train3000_en.seq</span><br style="font-style: italic;">
+<span style="font-style: italic;">test7000.seq <br>
+test7000_en.seq&nbsp; </span><br style="font-style: italic;">
+<span style="font-style: italic;">coiled_coil1.log</span><br style="font-style: italic;">
+<span style="font-style: italic;"></span><span style="font-style: italic;"> coiled_coil_energies.txt</span><br>
+<br>
+To check the scripts are properly working, compare the train3000.seq,
+test7000.seq, and coiled_coil_energies.txt you generate below to the
+ones already provided. <br>
+<span style="font-weight: bold; font-style: italic;">Note</span>: you
+should make backup copies of these 3 files with different names,
+otherwise they will be overwritten by the files you generate. <br>
+A quick way to check whether there are any differences between your
+generated file and the provided file is with the diff command (usage:
+&#8220;diff file1 file2&#8221;).<br>
+<br>
+<span style="font-weight: bold;">A) Training (GenSeqs and CETrFile)</span><br>
+To train an energy estimator using cluster expansion, we need a design
+file (coiled_coil_design.dat) and a sequence file (train3000.seq). <br>
+<br>
+The design file is user-defined. It defines what amino acids are
+allowed at each design site, and what clusters (single, pair,
+higher...) to consider in the training. In the case of a dimeric coiled
+coil, the clusters are also related by symmetry.<br>
+The sequence file can either be provided by the user, or created by GenSeqs starting from the design file:<br>
+1&gt; <span style="font-style: italic;">GenSeqs -n 3000 -d coiled_coil_design.dat -s train3000.seq</span><br>
+<br>
+From the design file coiled_coil_design.dat, GenSeqs creates 3000
+random sequences with energy 0. Sequences are stored in train3000.seq.
+To get protein energy (or whatever quantity is being fit) for each
+sequence, we must run an external script. The final sequence file
+containing both sequence and associated structure derived energies is
+already provided (train3000_en.seq). <br>
+<br>
+With the design file and sequence file, we now run CETrFile and train an energy estimator using cluster expansion:<br>
+<br>
+2&gt; <span style="font-style: italic;">CETrFile -d coiled_coil_design.dat -s train3000_en.seq -n 1000 -b 1 -t 1 -l coiled_coil1.log -r training1.result </span><br>
+<br>
+training1.result contains the trained CE and coiled_coil1.log contains
+details from the training procedure. The &#8220;-n&#8221; option sets the number of
+training set sequences to use, the &#8220;-b&#8221; option sets the d parameter
+used for cluster function screening, and the &#8220;-t&#8221; option sets how to
+deal with triplet cluster functions. <br>
+We can train the energy estimator in other ways. The next two commands
+take longer to run and do not need to be run to complete this tutorial.
+<br>
+In the following command, default parameters are used (all training sequences used and d factor 0).<br>
+<span style="font-style: italic;">CETrFile -d coiled_coil_design.dat -s train3000_en.seq -l coiled_coil2.log -r training2.result</span><br>
+<br>
+If during training we want to remove 5 sequence groups containing cluster functions with the highest NH-ratio, we run: <br>
+<span style="font-style: italic;">CETrFile -d coiled_coil_design.dat -s train3000_en.seq -l coiled_coil3.log -e 5 -r training3.result</span><br>
+<br>
+<br>
+<span style="font-weight: bold;">B) Testing (GenSeqs and CEEnergy)</span><br>
+Now that we have trained an energy estimator (training1.result) for
+dimeric coiled coils, we can use it to evaluate energies of new
+sequences. <br>
+<br>
+To generate a test set, we again use GenSeqs. Adding the -o option
+generates a set of sequences (test7000.seq) independent of those found
+in the training set, meaning no test set sequence will have already
+been used in the training set.<br>
+<br>
+3&gt; <span style="font-style: italic;">GenSeqs -n 7000 -o train3000.seq -d coiled_coil_design.dat -s test7000.seq</span><br style="font-style: italic;">
+<br>
+Now with CEEnergy we can use the trained energy estimator from command 2&gt; to evaluate test sequences. <br>
+<br>
+4&gt;<span style="font-style: italic;"> CEEnergy -r training1.result -s test7000_en.seq -l coiled_coil_energies.txt -i 1</span><br>
+<br>
+test7000_en.seq contains the structure derived energies for
+test7000.seq. The CE energies can be compared to the energies
+calculated by the structure based energy function by plotting the two
+columns in coiled_coil_energies.txt against one another. <br>
+<br>
+<img style="width: 397px; height: 324px;" alt="" src="ceresult.jpg"><br>
+<br>
+</big><span lang="EN-US"><a href="main.htm"><img style="border: 0px solid ; width: 129px; height: 50px;" alt="" src="home.jpg"></a></span><br>
+<big><br>
+<br>
+</big></body></html>

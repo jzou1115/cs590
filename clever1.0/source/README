@@ -1,0 +1,78 @@
+---------------------------------------------------------------------
+CLEVER can be used without restriction for academic purposes.
+http://web.mit.edu/biology/keating 
+version: 1.0 (Feb 5, 2010)
+correspondence:
+   Amy Keating (keating@mit.edu)
+Major Author:
+   Seungsoo Hahn (hahnss@kaist.ac.kr, coding source and writing docs)
+Minor Author:
+   Orr Ashenberg (writing docs and comment)
+Other contributor:
+   Gevorg Grigoryan (comment)
+---------------------------------------------------------------------
+
+CLEVER have been developed to carry out cluster expansion method 
+for rapid evaluation of protein energy or other sequence-related 
+properties. The cluster expansion method was first introduced in the 
+paper, Zhou(2005), and used in various papers, 
+i.e. Grigoryan(2006,2009), Apgar(2009), and Hahn(2010).
+You can refer this program through the paper, Hahn(2010)
+
+References
+Apgar(2009), J Comput Chem 30, 2402, 2009
+Grigoryan(2006), PLoS Comput Biol 2, e63, 2006
+Grigoryan(2009), Nature 458, 859, 2009
+Hahn(2010), J Comput Chem submitted
+Zhou(2005), Phys Rev Lett 95, 148103, 2005
+
+INSTALL
+  1. type "make", this generates three executable modules, 
+     i.e. GenSeqs, CETrFile, and CEEnergy.
+  2. copy the modules to the "test" directory and
+     try them using the files in the directory.
+  3. copy the modules to the excutable directory
+Source codes were compiled successfully in the g++3.4.6 version
+
+FILES
+  clever1.0/
+       argparser.cpp
+       ccfdef.cpp
+       ccflist.cpp
+       ccfs.cpp
+       cctrl.cpp
+       cemethod.cpp
+       cinput.cpp
+       cnmat.cpp
+       cnvec.cpp
+       coperators.cpp
+       cstring.cpp
+       ctset.cpp
+       cutil.cpp
+       exception.cpp
+       Main_CEEnergy.cpp
+       Main_CETrFile.cpp
+       Main_GenSeqs.cpp
+       mcsimul.cpp
+       argparser.hpp
+       ccfdef.hpp
+       ccflist.hpp
+       ccfs.hpp
+       cctrl.hpp
+       cemethod.hpp
+       cinput.hpp
+       cnmat.hpp
+       cnvec.hpp
+       cstring.hpp
+       ctset.hpp
+       cutil.hpp
+       exception.hpp
+       general.hpp
+       mcsimul.hpp
+       MakeFile
+       README
+       docs/
+           ce_tutorial.pdf
+           ce_quickstart.pdf
+           webhelp1.0/
+       test/

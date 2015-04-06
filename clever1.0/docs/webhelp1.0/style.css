@@ -1,0 +1,48 @@
+.nolinespace {line-height: 0%}
+.bdsolid {border-bottom-style: solid}
+
+h1
+{
+margin-left: 2pt;
+font-size: 14pt;
+font-weight: bold;
+}
+h2,li
+{
+margin-left: 2pt;
+font-size: 12pt;
+}
+h3
+{
+margin-left: 12pt;
+font-size: 11pt;
+}
+
+table,address
+{
+margin-left: 10pt;
+}
+p,li
+{
+margin-left: 2pt;
+}
+h1,h2,h3,p,li,th,td
+{
+font-family: arial; 
+font-weight: normal;
+}
+
+p,li,th,td
+{
+font-size: 100%;
+}
+
+body
+{
+background-color: #ffffff;
+}
+
+a:link    {color:blue}
+a:visited {color:red}
+a:active  {color:aqua}
+a:hover   {color:aqua}

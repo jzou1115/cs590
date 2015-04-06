@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+  
+  <link rel="stylesheet" type="text/css" href="style.css"><title>CLEVER-CETrFile</title></head><body>
+<h1> CETrFile </h1>
+
+<h2 align="justify">CETrFile trains an energy estimator using the
+cluster expansion method starting from both&nbsp; a design file and a
+sequence file that includes associated energies (or other
+sequence-related property). To remove parts of sequence space not well
+described by the CE method, such sequence groups may be identified and
+eliminated based on their having cluster functions with large
+normalized heterogeneity ratios (NH-ratio). </h2>
+
+<h2 class="nolinespace"><span style="font-style: italic;">Usage</span>
+: CETrFile [OPTIONS]</h2>
+
+<h3> <i>ex</i>) <br>
+CETrFile -d design.file -s sequence.file -r training.result <br>
+CETrFile -d design file -s sequence.file -r training.result -n 3000 -b
+5 -l output.file </h3>
+
+<h2 class="nolinespace"> REQUIRED OPTIONS </h2>
+
+<ul>
+
+  <li><i>-d [design file]</i> : design file containing design
+information (number of design sites and list for possible amino acids
+at each site) and structural information (clusters) </li>
+  <li><i>-s [sequence file]</i> : training set containing sequences and
+their associated energies</li>
+</ul>
+
+<h2 class="nolinespace"> OTHER OPTIONS </h2>
+
+<ul>
+
+  <li><i>-r [training result]</i> : binary results file containing
+energy estimator trained using CE method (default file name:
+trainresults.eci)</li>
+  <li><i>-l [output file]</i> : log file containing various information
+generated during training process. If this option is omitted then the
+log results print on standard output device.</li>
+  <li><i>-n [number of sequences]</i> : number of sequences from
+training set to use, starting from beginning of sequence file (default
+: number of sequences in sequence file) </li>
+  <li><i>-b [d parameter]</i> : a parameter to adjust the stringency of
+CF selection. Increasing the value of this option lowers the acceptance
+ratio for selecting new CFs, so that the total number of selected CFs
+decreases (default 0.0).</li>
+  <li><i>-e [number]</i> : number of sequence groups to be eliminated
+by eliminating sequences containing the cluster functions with maximum
+NH-ratio (default 0) </li>
+  <li><i> -m [number]</i> : minimum number of sequences for a CF. If a
+training set does not contain this number of sequences for a given CF,
+then the CF and its associated sequences are excluded from being
+selected. This value must be 3 or larger.</li>
+  <li><i> -t [mode]</i> : determine how to deal with higher-order
+CFs(triplet) <br>
+[<i>mode=0</i>]: use all triplets listed in design file<br>
+[<i>mode=1</i>]: use all triplets listed in design file and use
+triplets made from selected pair CFs. (if all three possible pair CFs
+exist between the three sites, include the triplet CF for those three
+sites). <br>
+  </li>
+<li><i> -v</i> : print version information</li>
+<li><i> -h</i> : display this help and exit</li>
+  <li><i> -h design</i> : display an example design file</li>
+  <li><i> -h sequence</i> : display an example sequence file</li>
+</ul><span lang="EN-US"><a href="main.htm"><img style="border: 0px solid ; width: 129px; height: 50px;" alt="" src="home.jpg"></a></span>
+
+</body></html>
