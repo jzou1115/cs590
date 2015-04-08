@@ -211,33 +211,13 @@ public class PairwiseEnergyMatrix implements Serializable {
 							if (eMatrix[p1][a1][r1]!=null){
 								String line="";
 								if(!labelsMap.keySet().contains(line)){
-									line= line+p1+"_"+a1+"_"+r1;
+									line= p1+"_"+a1+"_"+r1;
 									labelsMap.put(line, i);
 									labels.add(line);
 									i++;
 								}
 								else{
 									System.out.println("Error: Duplicate Key "+ line);
-								}
-								for (int p2=0; p2<eMatrix[p1][a1][r1].length; p2++){
-									if (eMatrix[p1][a1][r1][p2]!=null){
-										for (int a2=0; a2<eMatrix[p1][a1][r1][p2].length; a2++){
-											if (eMatrix[p1][a1][r1][p2][a2]!=null){
-												for (int r2=0; r2<eMatrix[p1][a1][r1][p2][a2].length; r2++){
-													String line2="";
-													if(!labelsMap.keySet().contains(line)){
-														line2= line2+p2+"_"+a2+"_"+r2;
-														labelsMap.put(line2, i);
-														labels.add(line2);
-														i++;
-													}
-													else{
-														System.out.println("Error: Duplicate Key "+ line);
-													}
-												}
-											}
-										}
-									}
 								}
 							}
 							
@@ -246,36 +226,42 @@ public class PairwiseEnergyMatrix implements Serializable {
 				}
 			}				
 		}
-		
+		System.out.println("SIZE OF EMATRIX IS: "+labels.size());
 		
 		double[][] out= new double[labels.size()][labels.size()];
-
-		for (int p1=0; p1<eMatrix.length; p1++){
-			if (eMatrix[p1]!=null){
-				for (int a1=0; a1<eMatrix[p1].length; a1++){
-					if (eMatrix[p1][a1]!=null){
-						for (int r1=0; r1<eMatrix[p1][a1].length; r1++){
-							if (eMatrix[p1][a1][r1]!=null){
-								for (int p2=0; p2<eMatrix[p1][a1][r1].length; p2++){
-									if (eMatrix[p1][a1][r1][p2]!=null){
-										for (int a2=0; a2<eMatrix[p1][a1][r1][p2].length; a2++){
-											if (eMatrix[p1][a1][r1][p2][a2]!=null){
-												for (int r2=0; r2<eMatrix[p1][a1][r1][p2][a2].length; r2++){
-													double e= eMatrix[p1][a1][r1][p2][a2][r2];
-													String k1= p1+"_"+a1+"_"+r1;
-													String k2= p2+"_"+a2+"_"+r2;
-													out[labelsMap.get(k1)][labelsMap.get(k2)]= e;
-													out[labelsMap.get(k2)][labelsMap.get(k1)]= e;
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+		/**
+		//initialize diagonal
+		for(int j=0; j<labels.size();j++){
+			int ind= labelsMap.get(labels.get(j));
+			String[] tokens= labels.get(j).split("_");
+			int p= Integer.parseInt(tokens[0]);
+			int a= Integer.parseInt(tokens[1]);
+			int r= Integer.parseInt(tokens[2]);
+			double[] intra = eMatrix[p][a][r][p][0]; 			//Array containing intra-rotamer and rot-shell energies
+			out[ind][ind] = intra[0]+intra[1]; 
+		}
+**/
+		for(String l:labels){
+			for(String k:labels){
+				String[] tokens1= l.split("_");
+				String[] tokens2= k.split("_");
+				if(!labelsMap.containsKey(tokens1) | !labelsMap.containsKey(tokens2)){
+					;
 				}
-			}				
+				//same position
+				else if(Integer.parseInt(tokens1[0]) == Integer.parseInt(tokens2[0])){
+					out[labelsMap.get(tokens1)][labelsMap.get(tokens2)]= Double.POSITIVE_INFINITY;
+				}
+				else{
+					int p1= Integer.parseInt(tokens1[0]);
+					int a1= Integer.parseInt(tokens1[1]);
+					int r1= Integer.parseInt(tokens1[2]);
+					int p2= Integer.parseInt(tokens2[0]);
+					int a2= Integer.parseInt(tokens2[1]);
+					int r2= Integer.parseInt(tokens2[2]);
+					out[labelsMap.get(tokens1)][labelsMap.get(tokens2)] = eMatrix[p1][a1][r1][p2][a2][r2];
+				}
+			}
 		}
 		
 		FileWriter fw= new FileWriter(outfile);
@@ -284,6 +270,7 @@ public class PairwiseEnergyMatrix implements Serializable {
 			head=head+"\t"+l;
 		}
 		head=head+"\n";
+		System.out.println(head);
 		fw.write(head);
 		
 		int row=0;
@@ -291,6 +278,7 @@ public class PairwiseEnergyMatrix implements Serializable {
 			String line= l;
 			for(int k=0; k<labels.size();k++){
 				line=line+"\t"+out[row][k];
+				System.out.println(line);
 			}
 			line=line+"\n";
 			fw.write(line);
