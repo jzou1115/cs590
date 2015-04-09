@@ -1,8 +1,10 @@
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -199,9 +201,15 @@ public class PairwiseEnergyMatrix implements Serializable {
 			return;
 		}
 		
+		
+		BufferedWriter fw2= new BufferedWriter(new FileWriter(outfile+"_deepToString.txt"));
+		fw2.write(Arrays.deepToString(eMatrix));
+		fw2.close();
+	
+	
 		HashMap<String, Integer> labelsMap= new HashMap<String, Integer>(); 
 		List<String> labels = new ArrayList<String>();
-		
+
 		int i=0;
 		for (int p1=0; p1<eMatrix.length; p1++){
 			if (eMatrix[p1]!=null){
@@ -210,14 +218,34 @@ public class PairwiseEnergyMatrix implements Serializable {
 						for (int r1=0; r1<eMatrix[p1][a1].length; r1++){
 							if (eMatrix[p1][a1][r1]!=null){
 								String line="";
+								line= p1+"_"+a1+"_"+r1;
 								if(!labelsMap.keySet().contains(line)){
-									line= p1+"_"+a1+"_"+r1;
 									labelsMap.put(line, i);
 									labels.add(line);
 									i++;
 								}
 								else{
 									System.out.println("Error: Duplicate Key "+ line);
+								}
+								for(int p2=0; p2<eMatrix[p1][a1][r1].length;p2++){
+									if(eMatrix[p1][a1][r1][p2]!=null){
+										for(int a2=0; a2<eMatrix[p1][a1][r1][p2].length; a2++){
+											if(eMatrix[p1][a1][r1][p2][a2]!=null){
+												for(int r2=0; r2<eMatrix[p1][a1][r1][p2][a2].length;r2++){
+													String line2="";
+													line2= p2+"_"+a2+"_"+r2;
+													if(!labelsMap.keySet().contains(line2)){
+														labelsMap.put(line2, i);
+														labels.add(line2);
+														i++;
+													}
+													else{
+														System.out.println("Duplicate Key (not error)"+ line);
+													}
+												}
+											}
+										}
+									}
 								}
 							}
 							
@@ -229,28 +257,23 @@ public class PairwiseEnergyMatrix implements Serializable {
 		System.out.println("SIZE OF EMATRIX IS: "+labels.size());
 		
 		double[][] out= new double[labels.size()][labels.size()];
-		/**
-		//initialize diagonal
-		for(int j=0; j<labels.size();j++){
-			int ind= labelsMap.get(labels.get(j));
-			String[] tokens= labels.get(j).split("_");
-			int p= Integer.parseInt(tokens[0]);
-			int a= Integer.parseInt(tokens[1]);
-			int r= Integer.parseInt(tokens[2]);
-			double[] intra = eMatrix[p][a][r][p][0]; 			//Array containing intra-rotamer and rot-shell energies
-			out[ind][ind] = intra[0]+intra[1]; 
-		}
-**/
+	
+
 		for(String l:labels){
 			for(String k:labels){
 				String[] tokens1= l.split("_");
 				String[] tokens2= k.split("_");
-				if(!labelsMap.containsKey(tokens1) | !labelsMap.containsKey(tokens2)){
-					;
+				
+				if(l.equals(k)){
+					out[labelsMap.get(l)][labelsMap.get(k)]= 0;
+				}
+				else if(!labelsMap.containsKey(l) | !labelsMap.containsKey(k)){
+					System.out.println("Missing key!\t"+tokens1+"\t"+tokens2);
 				}
 				//same position
 				else if(Integer.parseInt(tokens1[0]) == Integer.parseInt(tokens2[0])){
-					out[labelsMap.get(tokens1)][labelsMap.get(tokens2)]= Double.POSITIVE_INFINITY;
+					out[labelsMap.get(l)][labelsMap.get(k)]= Double.POSITIVE_INFINITY;
+					out[labelsMap.get(k)][labelsMap.get(l)]= Double.POSITIVE_INFINITY;
 				}
 				else{
 					int p1= Integer.parseInt(tokens1[0]);
@@ -259,12 +282,18 @@ public class PairwiseEnergyMatrix implements Serializable {
 					int p2= Integer.parseInt(tokens2[0]);
 					int a2= Integer.parseInt(tokens2[1]);
 					int r2= Integer.parseInt(tokens2[2]);
-					out[labelsMap.get(tokens1)][labelsMap.get(tokens2)] = eMatrix[p1][a1][r1][p2][a2][r2];
+					//null pointer exception at third conditional, even though second passed
+					
+					if((eMatrix!=null) && (eMatrix.length>p1)&&(eMatrix[p1]!=null) && (eMatrix[p1].length>a1) && (eMatrix[p1][a1]!=null) &&(eMatrix[p1][a1].length>r1) && (eMatrix[p1][a1][r1]!=null) && (eMatrix[p1][a1][r1].length>p2) && (eMatrix[p1][a1][r1][p2]!=null) && (eMatrix[p1][a1][r1][p2].length>a2) && (eMatrix[p1][a1][r1][p2][a2]!=null) && (eMatrix[p1][a1][r1][p2][a2].length>r2)){
+						System.out.println("e="+eMatrix[p1][a1][r1][p2][a2][r2]);
+						out[labelsMap.get(k)][labelsMap.get(l)] = eMatrix[p1][a1][r1][p2][a2][r2];
+						out[labelsMap.get(l)][labelsMap.get(k)] = eMatrix[p1][a1][r1][p2][a2][r2];
+					}
 				}
 			}
 		}
 		
-		FileWriter fw= new FileWriter(outfile);
+		BufferedWriter fw= new BufferedWriter(new FileWriter(outfile));
 		String head=".";
 		for(String l: labels){
 			head=head+"\t"+l;
@@ -282,7 +311,10 @@ public class PairwiseEnergyMatrix implements Serializable {
 			}
 			line=line+"\n";
 			fw.write(line);
+			row++;
 		}
+		fw.close();
+		//**/
 		return;
 	}
 

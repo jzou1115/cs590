@@ -2011,7 +2011,7 @@ public class KSParser
 			
 			rs.loadPairwiseEnergyMatrices(minMatrixFile+suffix,true);
 			if (doMinimize)
-				rs.loadPairwiseEnergyMatrices(maxMatrixFile+suffix,false);
+				rs.loadPairwiseEnergyMatrices(maxMatrixFile+suffix,false);//doMinimize
 
 		}
 	}
@@ -2403,8 +2403,9 @@ public class KSParser
 	/**
 	 * Computes a specific part of the pairwise energy matrices, as specified by the parameters in the 'cObj' parameter,
 	 * distributed by the main processor. Returns the results of the computation to the main processor.
+	 * @throws IOException 
 	 */
-	public CommucObj handleComputeAllPairwiseRotamerEnergiesSlave(CommucObj cObj) {
+	public CommucObj handleComputeAllPairwiseRotamerEnergiesSlave(CommucObj cObj) throws IOException {
 				
 		long startTime = System.currentTimeMillis();
                 
@@ -2540,6 +2541,8 @@ public class KSParser
 				cObj.resMut,minEmatrix,maxEmatrix,cObj.minimizeBB,cObj.doBackrubs,
 				templateOnly,cObj.backrubFile, cObj.templateAlwaysOn, cObj.strandDefault,cObj.compCETM);
 		
+		minEmatrix.write("min.txt");
+		maxEmatrix.write("max.txt");
 		
 		long stopTime = System.currentTimeMillis();
 		cObj.elapsedTime = Math.round((stopTime - startTime) / 1000.0f);
@@ -3804,6 +3807,8 @@ public class KSParser
 			System.out.println("Total execution time: "+((stopTime-startTimeAll)/(60.0*1000.0)));
 			//end of DEE section
 			/////////////////////////////////////////////////////////////
+			
+			
 		}
 		while(difference > 0.001 && useMinDEEPruningEw && doMinimize); // 2010: if I1-I0 >0 we must repeat the cycle with the new energy 
         // window.  This can only happen if useMinDEEPruningEw is true
