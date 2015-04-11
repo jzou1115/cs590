@@ -1,6 +1,4 @@
 from array import array
-import struct
-import sys
 
 # variable assignments are as follows:
 #	 - numpoints: number of MRF nodes
@@ -30,17 +28,21 @@ import sys
 #	   used in the MRF pairwise potentials. wcosts[i] is the weight corresponding 
 #	   to the i-th MRF edge.
 
-in_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/osprey.txt', 'r')
-out_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'w+b')
+label_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/labels.txt', 'r')
+cost_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/mutationEnergiesMin.txt', 'r')
+out_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'wb')
 
-numpoints = int(f.readline()).to_bytes(4, sys.biteorder)
-numlabels = int(f.readline()).to_bytes(4, sys.biteorder)
-lcosts = array('d', [float(item) for item in f.readline().split(',')])
-numpairs = int(f.readline()).to_bytes(4, sys.biteorder)
-pairs = array('d', [int(item) for item in f.readline().split(',')])
-dist = array('d', [float(item) for item in f.readline().split(',')])
-max_iters = (30).to_bytes(4, sys.bite_order)
-wcosts = array('d', [1 for i in xrange(numpairs)])
+labels=label_file.readline().split("\t")
+costs=[map (float(line.split("\t")) for line in cost_file]
+
+numpoints=len(costs[0]).to_bytes(4, sys.biteorder)
+numlabels=len(labels).to_bytes(4, sys.biteorder)
+lcosts=array('d', [costs[i][i] for i in xrange(numpoints)])
+pairs=array('d', [item for sublist in [[(i,j) for j in xrange(i+1, numpoints)] for i in xrange(numpoints)][:-1] for pair in sublist for item in pair])
+numpairs=len(pairs).to_bytes(4, sys.biteorder)
+dist=array('d', [dist for lst in costs for dist in lst])
+max_iters=(30).to_bytes(4, sys.bite_order)
+wcosts=array('d', [1 for i in xrange(numpairs)])
 
 data = [numpoints, numlabels, lcosts, numpairs, pairs, dist, max_iters, wcosts]
 for item in data:
