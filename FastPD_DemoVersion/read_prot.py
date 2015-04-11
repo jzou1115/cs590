@@ -5,7 +5,7 @@ import sys
 # variable assignments are as follows:
 #	 - numpoints: number of MRF nodes
 
-# 	- numlabels: number of labels
+# 	 - numlabels: number of labels
 
 #	 - lcosts: 1-dimensional array of size numlabels*numpoints containing the 
 #	   label costs (i.e., the MRF singleton-potentials). The label cost
@@ -30,8 +30,8 @@ import sys
 #	   used in the MRF pairwise potentials. wcosts[i] is the weight corresponding 
 #	   to the i-th MRF edge.
 
-in_file=open('/home/aditya/Desktop/proteins/fastpd/osprey.txt', 'r')
-out_file=open('/home/aditya/Desktop/proteins/fastpd/matrices.bin', 'w+b')
+in_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/osprey.txt', 'r')
+out_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'w+b')
 
 numpoints = int(f.readline()).to_bytes(4, sys.biteorder)
 numlabels = int(f.readline()).to_bytes(4, sys.biteorder)
