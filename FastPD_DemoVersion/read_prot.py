@@ -32,19 +32,19 @@ label_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/labels.txt', 'r')
 cost_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/mutationEnergiesMin.txt', 'r')
 out_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'wb')
 
-labels=label_file.readline().split("\t")
-costs=[map (float(line.split("\t")) for line in cost_file]
+labels=label_file.readline().split('\t')
+costs=[map(float,line.split('\t')[:-1]) for line in cost_file]
 
-numpoints=len(costs[0]).to_bytes(4, sys.biteorder)
-numlabels=len(labels).to_bytes(4, sys.biteorder)
-lcosts=array('d', [costs[i][i] for i in xrange(numpoints)])
-pairs=array('d', [item for sublist in [[(i,j) for j in xrange(i+1, numpoints)] for i in xrange(numpoints)][:-1] for pair in sublist for item in pair])
-numpairs=len(pairs).to_bytes(4, sys.biteorder)
+numpoints=bytes(len(costs[0]))
+numlabels=bytes(len(labels))
+lcosts=array('d', [costs[i][i] for i in xrange(len(costs[0]))])
+pairs=array('d', [item for sublist in [[(i,j) for j in xrange(i+1, len(costs[0]))] for i in xrange(len(costs[0]))][:-1] for pair in sublist for item in pair])
+numpairs=bytes(len(pairs))
 dist=array('d', [dist for lst in costs for dist in lst])
-max_iters=(30).to_bytes(4, sys.bite_order)
-wcosts=array('d', [1 for i in xrange(numpairs)])
+max_iters=bytes((30))
+wcosts=array('d', [1 for i in xrange(len(pairs))])
 
 data = [numpoints, numlabels, lcosts, numpairs, pairs, dist, max_iters, wcosts]
 for item in data:
-	item.to_file(out_file)
+	out_file.write(item)
 out_file.close()
