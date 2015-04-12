@@ -1,37 +1,32 @@
 from array import array
-
-# variable assignments are as follows:
-#	 - numpoints: number of MRF nodes
-
-# 	 - numlabels: number of labels
-
-#	 - lcosts: 1-dimensional array of size numlabels*numpoints containing the 
-#	   label costs (i.e., the MRF singleton-potentials). The label cost
-#	   for the k-th label at the i-th node is assumed to be given by
-#	   lcosts[k*numpoints+i].
-
-#	 - numpairs: number of MRF edges
-
-#	 - int *pairs: 1-dimensional array of size 2*numpairs containing the 
-#	   nodes' indices for each MRF edge. The indices for the two nodes of 
-#	   the i-th edge are assumed to be given by: pairs[2*i], pairs[2*i+1].
-#	   (Note that the nodes' indices start from 0).
-
-#	 - Real *dist: the distance function used for defining the MRF pairwise
-#	   potentials. This is an 1-dimensional array of size numlabels*numlabels.
-#	   The distance D(x_p,x_q) is assumed to be given by: dist[x_q*numlabels+x_p].
-#	   (Label indices start from 0).
-  
-#	 - max_iters: maximum number of outer iterations of the FastPD algorithm
-
-#	 - wcosts: 1-dimensional array of size numpairs containing the weights w_{pq}
-#	   used in the MRF pairwise potentials. wcosts[i] is the weight corresponding 
-#	   to the i-th MRF edge.
+import struct
+import numpy
 
 label_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/labels.txt', 'r')
 cost_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/mutationEnergiesMin.txt', 'r')
 out_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'wb')
 
+labels=label_file.readline().split('\t')
+costs=[map(float,line.split('\t')[:-1]) for line in cost_file]
+
+
+
+numpoints=len(costs[0])
+print("numpoints: "+str(numpoints))
+
+numlabels=len(labels)
+print("numlabels: "+str(numlabels))
+
+#lcosts=array('l', [int(round(costs[i][i])) for i in xrange(len(costs[0]))])
+lcosts=array('l', [0 for i in xrange(numpoints*numlabels)])
+print("lcosts: "+str(len(lcosts)))
+
+for i in xrange(len(costs)):
+	costs[i][i]=0
+pairs=array('l', [item for sublist in [[(i,j) for j in xrange(i+1, len(costs[0]))] for i in xrange(len(costs[0]))][:-1] for pair in sublist for tup in (pair, pair[::-1]) for item in tup])
+print("pairs: "+str(len(pairs)))
+
+<<<<<<< HEAD
 num=input("how long to wait: ")
 
 labels=label_file.readline().split('\t')
@@ -52,3 +47,49 @@ for item in data:
 out_file.close()
 
 
+=======
+numpairs=len(pairs)/2
+print("numpairs: "+str(numpairs))
+
+dist = [0 for i in xrange(numlabels*numlabels)]
+for i in xrange(len(costs)):
+	for j in xrange(len(costs[i])):
+		dist[i*numlabels + j] = int(round(costs[i][j]))
+print("dist: "+str(len(dist)))
+
+max_iters=30
+print("max_iters: "+str(max_iters))
+
+wcosts=array('l', [1 for i in xrange(numpairs)])
+
+# The input binary file is assumed to contain all the necessary data for
+# defining the energy of a discrete MRF. 
+# More specifically, it should contain the following variables according 
+# to the order indicated below:
+#  *  numpoints
+#  *  numlabels
+#  *  numpairs
+#  *  max_iters
+#  *  lcosts
+#  *  pairs
+#  *  dist
+#  *  wcosts
+
+out_file.write(struct.pack('=l', numpoints))
+out_file.write(struct.pack('=l', numlabels))
+out_file.write(struct.pack('=l', numpairs))
+out_file.write(struct.pack('=l', max_iters))
+out_file.write(struct.pack('='+'l'*len(lcosts), *lcosts))
+out_file.write(struct.pack('='+'l'*len(pairs), *pairs))
+out_file.write(struct.pack('='+'l'*len(dist), *dist))
+out_file.write(struct.pack('='+'l'*len(wcosts), *wcosts))
+out_file.close()
+
+
+r=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'rb')
+print(struct.unpack('l',r.read(8)))
+print(struct.unpack('l',r.read(8)))
+print(struct.unpack('l',r.read(8)))
+print(struct.unpack('l',r.read(8)))
+r.close()
+>>>>>>> origin/adi
