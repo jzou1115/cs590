@@ -36,6 +36,8 @@ dist = [0 for i in xrange(numlabels*numlabels)]
 for i in xrange(len(costs)):
 	for j in xrange(len(costs[i])):
 		dist[i*numlabels + j] = int(round(costs[i][j]))
+		if (j==0 and i!=0):
+			dist[i*numlabels + j] = 10000
 print("dist: "+str(len(dist)))
 
 max_iters=30
