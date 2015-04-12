@@ -18,6 +18,7 @@ numlabels=len(labels)
 print("numlabels: "+str(numlabels))
 
 internals=[int(round(costs[i][i])) for i in xrange(len(costs[0]))]
+internals[0]=10000
 lcosts=[item for item in internals*len(costs[0])]
 print("lcosts: "+str(len(lcosts)))
 
