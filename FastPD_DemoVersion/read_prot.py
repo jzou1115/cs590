@@ -2,9 +2,9 @@ from array import array
 import struct
 import numpy
 
-label_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/labels.txt', 'r')
-cost_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/mutationEnergiesMin.txt', 'r')
-out_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'wb')
+label_file=open('labels.txt', 'r')
+cost_file=open('mutationEnergiesMin.txt', 'r')
+out_file=open('matrices.bin', 'wb')
 
 labels=label_file.readline().split('\t')
 costs=[map(float,line.split('\t')[:-1]) for line in cost_file]
