@@ -17,14 +17,16 @@ print("numpoints: "+str(numpoints))
 numlabels=len(labels)
 print("numlabels: "+str(numlabels))
 
-#lcosts=array('l', [int(round(costs[i][i])) for i in xrange(len(costs[0]))])
-lcosts=array('l', [0 for i in xrange(numpoints*numlabels)])
+internals=[int(round(costs[i][i])) for i in xrange(len(costs[0]))]
+lcosts=[item for item in internals*len(costs[0])]
 print("lcosts: "+str(len(lcosts)))
 
 for i in xrange(len(costs)):
 	costs[i][i]=0
-pairs=array('l', [item for sublist in [[(i,j) for j in xrange(i+1, len(costs[0]))] for i in xrange(len(costs[0]))][:-1] for pair in sublist for tup in (pair, pair[::-1]) for item in tup])
+pairs=array('l', [item for sublist in [[(i,j) for j in xrange(i+1, len(costs[0]))] for i in xrange(len(costs[0]))][:-1] for pair in sublist for item in pair])
 print("pairs: "+str(len(pairs)))
+print(pairs)
+
 
 numpairs=len(pairs)/2
 print("numpairs: "+str(numpairs))
@@ -54,19 +56,11 @@ wcosts=array('l', [1 for i in xrange(numpairs)])
 #  *  wcosts
 
 out_file.write(struct.pack('=l', numpoints))
-out_file.write(struct.pack('=l', numlabels))
 out_file.write(struct.pack('=l', numpairs))
+out_file.write(struct.pack('=l', numlabels))
 out_file.write(struct.pack('=l', max_iters))
 out_file.write(struct.pack('='+'l'*len(lcosts), *lcosts))
 out_file.write(struct.pack('='+'l'*len(pairs), *pairs))
 out_file.write(struct.pack('='+'l'*len(dist), *dist))
 out_file.write(struct.pack('='+'l'*len(wcosts), *wcosts))
 out_file.close()
-
-
-r=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'rb')
-print(struct.unpack('l',r.read(8)))
-print(struct.unpack('l',r.read(8)))
-print(struct.unpack('l',r.read(8)))
-print(struct.unpack('l',r.read(8)))
-r.close()
