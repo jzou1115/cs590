@@ -1,6 +1,7 @@
 from array import array
 import struct
 import numpy
+import sys
 
 label_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/labels.txt', 'r')
 cost_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/mutationEnergiesMin.txt', 'r')
@@ -9,17 +10,18 @@ out_file=open('/home/aditya/git/cs590/FastPD_DemoVersion/matrices.bin', 'wb')
 labels=label_file.readline().split('\t')
 costs=[map(float,line.split('\t')[:-1]) for line in cost_file]
 
-
-
-numpoints=len(costs[0])
+numpoints=2
 print("numpoints: "+str(numpoints))
 
 numlabels=len(labels)
 print("numlabels: "+str(numlabels))
 
+
+maxint=2147483647
+lcosts=[0,0,0,maxint,maxint,maxint,maxint,maxint,maxint]
 internals=[int(round(costs[i][i])) for i in xrange(len(costs[0]))]
-internals[0]=10000
-lcosts=[item for item in internals*len(costs[0])]
+internals[0]=2147483647
+#lcosts=[item for item in internals*len(costs[0])]
 print("lcosts: "+str(len(lcosts)))
 
 for i in xrange(len(costs)):
@@ -37,7 +39,7 @@ for i in xrange(len(costs)):
 	for j in xrange(len(costs[i])):
 		dist[i*numlabels + j] = int(round(costs[i][j]))
 		if (j==0 and i!=0):
-			dist[i*numlabels + j] = 10000
+			dist[i*numlabels + j] = 2147483647
 print("dist: "+str(len(dist)))
 
 max_iters=30
