@@ -1,0 +1,141 @@
+=============
+Introduction:
+=============
+This is a demo version of FastPD, intended to show only part 
+of that algorithm's functionality. 
+
+The demo software was written by Nikos Komodakis.
+
+If you want to use this software or results obtained with it, 
+the following papers should be cited within your publication:
+
+- N. Komodakis and G. Tziritas, 
+  "Approximate Labeling via Graph-Cuts Based on Linear Programming", 
+  in IEEE Transactions on Pattern Analysis and Machine Intelligence 2007 
+
+- N. Komodakis, G. Tziritas and N. Paragios, 
+  "Performance vs Computational Efficiency for Optimizing Single and Dynamic MRFs: Setting the State of the Art with Primal Dual Strategies", 
+  in Computer Vision and Image Understanding 2008 
+
+===================
+Using the C++ code:
+===================
+The code is located in the "src" directory.
+This C++ demo version can be used for optimizing MRF energies of the following 
+form:
+
+	\sum_i V_i(x_i) + \sum_{ij} w_{ij}D(x_i,x_j) ,
+
+where w_{ij} represent edge weights, V_i denotes the unary potential function 
+for the i-th node, while D() denotes the distance function used for specifying 
+the pairwise potentials.
+
+a. For optimizing the above energy, an object of type CV_Fast_PD has to be 
+   constructed first:
+
+   CV_Fast_PD pd( numpoints, numlabels, lcosts, numpairs, pairs, dist, max_iters, wcosts  );
+
+b. Once such an object has been constructed, the method "run" can be used for 
+   optimizing the corresponding MRF energy:
+
+   pd.run();
+
+c. After that, the label assigned to the i-th node can be accessed via 
+   "pd._pinfo[i].label":
+
+   for( int i = 0; i < numpoints; i++ ) printf( "Node %d is assigned label %d\n", i, pd._pinfo[i].label );
+
+The constructor of the CV_Fast_PD object has the following form:
+
+CV_Fast_PD( int numpoints, int numlabels, Real *lcosts,
+            int numpairs , int *pairs   , 
+            Real *dist   , int max_iters, 
+            Real *wcosts  )
+
+and the arguments that have to be provided to it are as follows:
+
+- numpoints: number of MRF nodes
+
+- numlabels: number of labels
+
+- lcosts: 1-dimensional array of size numlabels*numpoints containing the 
+  label costs (i.e., the MRF singleton-potentials). The label cost
+  for the k-th label at the i-th node is assumed to be given by
+  lcosts[k*numpoints+i].
+
+- numpairs: number of MRF edges
+
+- int *pairs: 1-dimensional array of size 2*numpairs containing the 
+  nodes' indices for each MRF edge. The indices for the two nodes of 
+  the i-th edge are assumed to be given by: pairs[2*i], pairs[2*i+1].
+  (Note that the nodes' indices start from 0).
+
+- Real *dist: the distance function used for defining the MRF pairwise
+  potentials. This is an 1-dimensional array of size numlabels*numlabels.
+  The distance D(x_p,x_q) is assumed to be given by: dist[x_q*numlabels+x_p].
+  (Label indices start from 0).
+  
+- max_iters: maximum number of outer iterations of the FastPD algorithm
+
+- wcosts: 1-dimensional array of size numpairs containing the weights w_{pq}
+  used in the MRF pairwise potentials. wcosts[i] is the weight corresponding 
+  to the i-th MRF edge.
+
+====================
+Example application:
+====================
+As a simple example of using the code, a windows executable "FastPD.exe" has been 
+created, which can be used for running the FastPD algorithm (the corresponding 
+source code is in the file "FastPD.cpp").
+
+This executable simply takes as command line arguments the filenames of 
+an input and an output binary file.
+It then constructs a CV_Fast_PD object (based on the data read from the input file), 
+runs the FastPD algorithm, and saves the results to the specified output file.
+
+The input binary file is assumed to contain all the necessary data for
+defining the energy of a discrete MRF. 
+More specifically, it should contain the following variables according 
+to the order indicated below:
+ *  numpoints
+ *  numlabels
+ *  numpairs
+ *  max_iters
+ *  lcosts
+ *  pairs
+ *  dist
+ *  wcosts
+Check the file Fast_PD.cpp for more details.
+
+A sample input binary file "tsukuba.bin" is also provided, which contains 
+data for estimating a possible set of disparities for the "tsukuba" 
+stereo pair. 
+To test it, simply type the following at the command prompt:
+
+	FastPD.exe tsukuba.bin results.bin
+
+In this case you can visualize the results in Matlab by using the following code:
+
+	labeling = get_MRF_labeling( 'results.bin' );
+	labeling = reshape( labeling, 288, 384 ); figure; imshow( labeling, [] );
+
+In case one wants to compile the source code for this application, 
+a project file for "Microsoft Visual C++ 2008 Express" has been included 
+as well, but it is rather straightforward to use any other compiler.
+In this implementation the max-flow algorithm of Vladimir Kolmogorov has been
+used, but modifications have been applied to it.
+
+======
+NOTES: 
+======
+- This demo version is only for testing or research purposes, and is completely 
+  unoptimized with regard to memory usage. Hence, when applying it to large data 
+  sets, make sure you have enough memory on your computer 
+  (OTHERWISE SWAPPING FROM DISK WILL DOMINATE THE RUNNING TIME 
+  AND THUS THE ALGORITHM WILL BECOME VERY SLOW).
+
+- By default the MRF potentials are assumed to be of integer type.
+  (this ensures the best performance and avoids arithmetic errors).
+  To change that, the type Graph::Real (defined in file Graph.h) 
+  has to be modified accordingly. 
+

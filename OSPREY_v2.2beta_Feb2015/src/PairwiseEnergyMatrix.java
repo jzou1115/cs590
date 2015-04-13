@@ -263,17 +263,15 @@ public class PairwiseEnergyMatrix implements Serializable {
 			for(String k:labels){
 				String[] tokens1= l.split("_");
 				String[] tokens2= k.split("_");
-				
-				if(l.equals(k)){
-					out[labelsMap.get(l)][labelsMap.get(k)]= 0;
-				}
-				else if(!labelsMap.containsKey(l) | !labelsMap.containsKey(k)){
+				if(!labelsMap.containsKey(l) | !labelsMap.containsKey(k)){
 					System.out.println("Missing key!\t"+tokens1+"\t"+tokens2);
 				}
-				//same position
-				else if(Integer.parseInt(tokens1[0]) == Integer.parseInt(tokens2[0])){
-					out[labelsMap.get(l)][labelsMap.get(k)]= Double.POSITIVE_INFINITY;
-					out[labelsMap.get(k)][labelsMap.get(l)]= Double.POSITIVE_INFINITY;
+				else if(l.equals(k)){
+					int p1= Integer.parseInt(tokens1[0]);
+					int a1= Integer.parseInt(tokens1[1]);
+					int r1= Integer.parseInt(tokens1[2]);
+					out[labelsMap.get(l)][labelsMap.get(k)]=0;
+				//	out[labelsMap.get(l)][labelsMap.get(k)]= eMatrix[p1][a1][r1][p1][0][0]+eMatrix[p1][a1][r1][p1][0][1];
 				}
 				else{
 					int p1= Integer.parseInt(tokens1[0]);

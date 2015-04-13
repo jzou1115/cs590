@@ -2277,6 +2277,8 @@ public class KSParser
 		//initialize the pairwise energy matrices (full initialization - for all residues in residueMap[], the ligand, and the template)
 		PairwiseEnergyMatrix mutationEnergiesMin = new PairwiseEnergyMatrix(numberMutable,resMut,strandMut,rs,true,true,true);
 		PairwiseEnergyMatrix mutationEnergiesMax = null;
+		
+		
 		if(doMinimize)
 			mutationEnergiesMax = mutationEnergiesMin.copy();
 		double eRef[][] = new double[numberMutable][];
@@ -2541,8 +2543,8 @@ public class KSParser
 				cObj.resMut,minEmatrix,maxEmatrix,cObj.minimizeBB,cObj.doBackrubs,
 				templateOnly,cObj.backrubFile, cObj.templateAlwaysOn, cObj.strandDefault,cObj.compCETM);
 		
-		minEmatrix.write("min.txt");
-		maxEmatrix.write("max.txt");
+		//minEmatrix.write("min.txt");
+		//maxEmatrix.write("max.txt");
 		
 		long stopTime = System.currentTimeMillis();
 		cObj.elapsedTime = Math.round((stopTime - startTime) / 1000.0f);
