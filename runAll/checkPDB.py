@@ -32,7 +32,7 @@ def newPDB(pdb, f):
     outfile.close() 
 
 def writeSysCfg(name, start, end, mut):
-    outfile = open(name+"System.cfg", "w")
+    outfile = open("System.cfg", "w")
     outfile.write("pdbname "+name+"\n")
     outfile.write("strand0 "+str(start)+" "+str(end)+"\n")
     outfile.write("strandMutNums "+mut+"\n")
@@ -56,7 +56,7 @@ def getMuts(start, end, mut):
     return ret.strip()
 
 def writeDeeCfg(name, mut):
-    outfile = open(name+"DEE.cfg", "w")
+    outfile = open("DEE.cfg", "w")
     outfile.write("runName "+name+"\n")
     outfile.write("numMaxMut "+mut+"\n")
     outfile.write("doMinimize false\n")
