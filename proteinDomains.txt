@@ -1,0 +1,43 @@
+Armadillo repeats : named after the β-catenin-like Armadillo protein of the fruit fly Drosophila.
+	Beta-catenin- 1G3J, 1JDH, 1JPW, 1LUJ, 1P22, 1QZ7, 1T08, 1TH1, 2G57, 2GL7, 2Z6H, 3DIW, 3FQN, 3FQR, 3SL9, 3SLA, 3TX7, 4DJS
+	Plakoglobin - JUP ; ARVD12; CTNNG; DP3; DPIII; PDGB; PKGB
+	Adenomatous polyposis coli - 1DEB, 1EMU, 1JPP, 1M5I, 1T08, 1TH1, 1V18, 2RQU, 3AU3, 3NMW, 3NMX, 3NMZ, 3QHE, 3RL7, 3RL8, 3T7U, 4G69
+
+
+Basic Leucine zipper domain (bZIP domain) : is found in many DNA-binding eukaryotic proteins. One part of the domain contains a region that mediates sequence-specific DNA-binding properties and the Leucine zipper that is required for the dimerization of two DNA-binding regions. The DNA-binding region comprises a number of basic aminoacids such as arginine and lysine
+	c-Fos - 1A02, 1FOS, 1S9K
+	c-Jun - 1A02, 1FOS, 1JNM, 1JUN, 1S9K, 1T2K
+	CREB1 - 2LXT
+	Nrf2 - 2FLU, 2LZ1, 3ZGC, 4IFL
+	Maf - 3a5t
+
+Death effector domain (DED) : allows protein-protein binding by homotypic interactions (DED-DED). Caspase proteases trigger apoptosis via proteolytic cascades. Pro-Caspase-8 and pro-caspase-9 bind to specific adaptor molecules via DED domains and this leads to autoactivation of caspases.
+	FADD - 1a1w, 1a1z, 1e3y, 1e41, 2gf5
+
+EF hand : a helix-turn-helix structural motif found in each structural domain of the signaling protein calmodulin and in the muscle protein troponin-C.
+	ACTN1 - 2EYI, 2EYN
+	DGKA - 1TUZ
+	PDCD6 - 2ZN8, 2ZN9, 2ZND, 2ZNE, 2ZRS, 2ZRT, 3AAJ, 3AAK
+	
+
+Immunoglobulin-like domains : are found in proteins of the immunoglobulin superfamily (IgSF).[72] They contain about 70-110 amino acids and are classified into different categories (IgV, IgC1, IgC2 and IgI) according to their size and function. They possess a characteristic fold in which two beta sheets form a "sandwich" that is stabilized by interactions between conserved cysteines and other charged amino acids. They are important for protein-to-protein interactions in processes of cell adhesion, cell activation, and molecular recognition. These domains are commonly found in molecules with roles in the immune system.
+	CD4 - 1CDH, 1CDI, 1CDJ, 1CDU, 1CDY, 1G9M, 1G9N, 1GC1, 1JL4, 1OPN, 1OPT, 1OPW, 1Q68, 1RZJ, 1RZK, 1WBR, 1WIO, 1WIP, 1WIQ, 2B4C, 2JKR, 2JKT, 2KLU, 2NXY, 2NXZ, 2NY0, 2NY1, 2NY2, 2NY3, 2NY4, 2NY5, 2NY6, 2QAD, 3B71, 3CD4, 3JWD, 3JWO, 3LQA, 3O2D, 3S4S, 3S5L, 3T0E, 4H8W, 4JM2, 4P9H
+
+Phosphotyrosine-binding domain (PTB) : PTB domains usually bind to phosphorylated tyrosine residues. They are often found in signal transduction proteins. PTB-domain binding specificity is determined by residues to the amino-terminal side of the phosphotyrosine. Examples: the PTB domains of both SHC and IRS-1 bind to a NPXpY sequence. PTB-containing proteins such as SHC and IRS-1 are important for insulin responses of human cells.
+	APBA1 - 1AQC, 1U37, 1U38, 1U39, 1U3B, 1X11, 1X45, 1Y7N
+	EPS8 - 2E8M
+
+Pleckstrin homology domain (PH) : PH domains bind phosphoinositides with high affinity. Specificity for PtdIns(3)P, PtdIns(4)P, PtdIns(3,4)P2, PtdIns(4,5)P2, and PtdIns(3,4,5)P3 have all been observed. Given the fact that phosphoinositides are sequestered to various cell membranes (due to their long lipophilic tail) the PH domains usually causes recruitment of the protein in question to a membrane where the protein can exert a certain function in cell signalling, cytoskeletal reorganization or membrane trafficking.
+	CAMK1 (CaM kinases)- 4FG7, 4FG8, 4FG9, 4FGB
+	DDR1 (tyrosine kinases)- 3ZOS, 4AG4, 4BKJ, 4CKR
+
+Src homology 2 domain (SH2) : SH2 domains are often found in signal transduction proteins. SH2 domains confer binding to phosphorylated tyrosine (pTyr). Named after the phosphotyrosine binding domain of the src viral oncogene, which is itself a tyrosine kinase. See also: SH3 domain.
+Zinc finger DNA binding domain (ZnF_GATA) : ZnF_GATA domain-containing proteins are typically transcription factors that usually bind to the DNA sequence [AT]GATA[AG] of promoters.
+	ALB1 - 1AB2, 1ABL, 1AWO, 1BBZ, 1JU5, 1OPL, 1ZZP, 2ABL, 2E2B, 2F4J, 2FO0, 2G1T, 2G2F, 2G2H, 2G2I, 2GQG, 2HIW, 2HYY, 2HZ0, 2HZ4, 2HZI, 2O88, 2V7A, 3CS9, 3EG0, 3EG1, 3EG2, 3EG3, 3EGU, 3K2M, 3PYY, 3QRI, 3QRJ, 3QRK, 3T04, 3UE4, 3UYO, 4J9B, 4J9C, 4J9D, 4J9E, 4J9F, 4J9G, 4J9H, 4J9I, 4JJB, 4JJC, 4JJD
+	BCAR3 - 3T6A
+	STAT1 - 1BF5, 1YVL, 2KA6
+
+Zinc finger DNA binding domain (ZnF_GATA) : ZnF_GATA domain-containing proteins are typically transcription factors that usually bind to the DNA sequence [AT]GATA[AG] of promoters.
+	PCAF - 1CM0, 1JM4, 1N72, 1WUG, 1WUM, 1ZS5, 2RNW, 2RNX, 3GG3, 4NSQ
+	Kat5 - 2EKO, 2OU2
+
