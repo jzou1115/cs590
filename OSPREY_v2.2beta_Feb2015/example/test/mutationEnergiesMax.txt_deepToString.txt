@@ -1,0 +1,1 @@
+[[null, null, [[[[0.0, 5322.0742517569015]], null], [[[0.0, 4.881523785875515]], null], [[[0.0, 27.042782978709283]], null], [[[0.0, 15889.70034880371]], null], [[[0.0, 533.4043757647665]], null], [[[0.0, -12.243754933152559]], null]], null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null], [[[[[-679.508126311933]]]]]]
