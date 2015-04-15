@@ -12,7 +12,7 @@ for dir in 1AB2  1FSV  1NHZ  2EKO  2O2T; do
 #		echo $dat"_2d"
 		java -jar ../Print.jar $dat
 		python ../read_prot.py $dat"_2d.txt"
-		wine ../FastPD.exe matrices.bin results.bin
+		wine ../FastPD matrices.bin results.bin
 	cd ../
 	done
 done
