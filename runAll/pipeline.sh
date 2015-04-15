@@ -8,12 +8,15 @@ DEE=".pdbDEE.cfg"
 for dir in 1AB2; do 
 	cd $dir
 #	java -jar ../KStar.jar -c KStar.cfg fixStruct $dir".pdb" $dir"_fixed.pdb"
-        python ../checkPDB.py $dir".pdb" 3
+	echo "checkPDB start"
+        python ../checkPDB.py $dir"_fixed.pdb" 3
+	echo "KStar.jar start"
 	java -jar ../KStar.jar -c KStar.cfg doDEE ${dir}${Syst} ${dir}${DEE}
-	for dat in `ls *minM*.dat`; do 
-		java -jar ../Print.jar $dat
-		python ../read_prot.py "min.dat"
-		wine ../FastPD matrices.bin results.bin
+	echo "Print.jar start"
+	java -jar ../Print.jar min.dat
+	echo "read_prot.py start"
+	python ../read_prot.py min.dat_2d.txt
+	echo "FastPD start"
+	wine ../FastPD matrices.bin results.bin
 	cd ../
-	done
 done
