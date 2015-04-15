@@ -4,7 +4,6 @@ import sys
 label_file = sys.argv[1]
 out_file = sys.argv[2]
 
-
 cost_file=open(label_file, 'r')
 out_file=open(out_file, 'wb')
 
