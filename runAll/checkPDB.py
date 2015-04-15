@@ -76,8 +76,8 @@ def main():
 	# newPDB(pdb, args.pdb+"terRemoved.pdb")
 
         #write system.cfg
-        start = int(atoms[0].split()[4])
-        end = int(atoms[len(atoms)-1].split()[4])
+        start = int(atoms[0].split()[5])
+        end = int(atoms[len(atoms)-1].split()[5])
         writeSysCfg(args.pdb, start, end, args.mut)
 
         #write dee.cfg
