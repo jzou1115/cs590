@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath, amssymb}
+
+\title{\textbf{Novel Approaches to the Protein Design Problem}}
+\author{Adi Mukund \and Jennifer Zou}
+\date{}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Introduction}
+	The protein design problem can be described as follows. Given a set of 
+	backbone coordinates $\mathbf{c} = (\vec{c_1}, \vec{c_2 }, \dots, \vec{c_n})$
+	and rotamer library $R$ of length $r$, identify the optimal rotamer
+	assignment sequence $\vec{r} = (r_1, r_2,\dots, r_n)$, $r_i \in R$, 
+	$1 \leq i \leq n$ according to an energy function $E(\vec{r})$. This assignment
+	sequence is known as the global minimum energy conformation (GMEC). 
+	This problem has been proven to be NP-hard \cite{PW02}, and algorithms such 
+	as DEE \cite{BD97} have been created to allow for combinatorial pruning of 
+	the residue search space and make the design problem computationally tractable.
+	However, such algorithms cannot guarantee a time complexity less than the 
+	worst-case $O(nr^n)$. 
+	
+	Recent graph based algorithms such as BWM* \cite{DJJG15} use sparse residue 
+	interaction graphs in order to more efficiently compute functions over the residue
+	space and identify optimal assignments more rapidly. Such graph-based algorithms
+	have been able to achieve combinatorial speedups while maintaining provable
+	accuracy and returning ensemble of minimum energy conformations. 	
+	
+	Probabilistic models of protein design assign a probability distribution 
+	for rotamers in each position of the protein sequence.  In algorithms such as
+	belief propagation, the beliefs or the approximate marginal probabilities
+	of each rotamer are computed iteratively.  These approximations are computationally
+	less intense, but they are not always provably accurate \cite{KLX08}. Furthermore,
+	such algorithms are only guaranteed to converge on tree graphs, which are not
+	commonly observed in natural proteins \cite{FLY09}. 
+
+	\section{Graph Cuts and the GMEC}
+	
+	\subsection{The Graph Labeling Problem}
+	
+	The goal of this project was to apply graph cut-based algorithms to the protein
+	design problem. We began by attempting to characterize the protein design problem
+	as a graph cut problem and identifying relevant algorithms that might allow
+	efficient approximations of the GMEC. 
+	
+	The protein design problem is most accurately represented not as solely a
+	graph cut problem, but as a graph labeling problem, where each rotamer is a label.
+	The Graph Labeling (GL) problem can be stated as follows: classify a set 
+	$\mathcal{V}$ of $n$ objects by assigning to each object a label from a given
+	set $\mathcal{L}$ of labels, given a weighted graph
+	$\mathcal{G}=(\mathcal{V},\mathcal{E},w)$. For each $p \in \mathcal{V}$ there
+	is a label cost $\textbf{c}_{p}(a) \geq 0$ for assigning the label $a=f_p$ to
+	$p$, and for every edge $pq$ there is a pairwise cost
+	$\textbf{c}_{pq}(a,b) =  w_{pq}d_{pq}(ab)$ where $d_{pq}(ab)$ is the distance
+	between (or cost of) label $a$ on vertex $p$ and $b$ on vertex $q$. Thus,
+	the cost of a labeling $f$ is as follows:
+		
+	\begin{equation} \label{k_cost}
+			\text{COST}(f) = 
+			\sum\limits_{p \in \mathcal{V}} \textbf{c}_{p}(f_p) + 
+			\sum\limits_{(p,q) \in \mathcal{E}} w_{pq}d_{pq}(f_p,f_q)
+		\end{equation}
+
+	The most promising algorithm for an efficient solution was \cite{Karmarkar}, 
+	which provides an approximation algorithm based on graph cuts for the 
+	nonmetric labeling problem, which requires a distance function $d(a,b)$ such
+	that $d(a,b)=0 \iff a=b$ and $d(a,b) \geq 0$. The algorithm provides a labeling 
+	with a cost that is an $f$-approximation to the minimum-cost labeling, where
+	$f = \frac{d_{max}}{d_{min}}$, where $d_{max}$ is the maximum distance between
+	any two rotamers and $d_{min}$ is the minimum distance. 
+
+	\subsection{Application to the Protein Design Problem}
+	
+	The internal energy of a protein can easily be modeled by equation \ref{k_cost},
+	where the function $\textbf{c}_{p}(f_p)$ is held to represent the internal
+	energy of a rotamer $f_p$ at position $p$ and the function 
+	$w_{pq}d_{pq}(f_p, f_q)$ is held to represent the pairwise interaction of a
+	rotamer $f_p$ at position $p$ and a rotamer $f_q$ at position $q$. 	In addition,
+	each residue is modeled by a single node in the vertex set $\mathcal{V}$, and
+	interactions between residues are represented by edges between nodes in the edge
+	set $\mathcal{E}$. 
+	
+	In order to maintain the distance constraint 
+	$\textbf{c}_{pq}(a,b) =  w_{pq}d_{pq}(ab)$, the label set $L$ was set as the
+	Cartesian product $R \times \mathcal{V}$ of the set of all rotamers with the set
+	of all positions. Thus, a given label $l \in \mathcal{L}$ represents a specific
+	rotamer at a particular position. The pairwise interaction between a label and
+	itself can then be set as zero. In order to ensure that a rotamer for position 1
+	was not assigned to position 2, the cost of labeling a rotamer to the wrong
+	position was set to be prohibitively high. 
+	
+	
+
+
+	\begin{thebibliography}{99}
+	
+	\bibitem {PW02} Pierce, Niles A. and Winfree, Erik. Protein Design is NP-hard 
+	Protein Eng. (2002) 15 (10): 779-782 doi:10.1093/protein/15.10.779
+	
+	\bibitem{BD97} Dahiyat, B. I. De Novo Protein Design: Fully Automated Sequence
+	Selection. Science 278, 82-87 (1997)	
+
+	\bibitem{DJJG15} Jou, J.D. Jain, S. Georgiev, I. Donald, B.R. BWM*: A Novel,
+	Provable, Ensemble-based Dynamic Programming Algorithm for Sparse 
+	Approximations of Computational Protein Design. RECOMB (2015) Warsaw, Poland.
+	April 12, 2015 (In Press)
+
+	\bibitem{KLX08} Kamisetty H1, Xing EP, Langmead CJ. Free energy estimates of
+	all-atom protein structures using generalized belief propagation. J Comput
+	Biol. 2008 Sep;15(7):755-66. doi: 10.1089/cmb.2007.0131.
+		
+	\bibitem{FLY09} M. Fromer, C. Yanover, and M. Linial. Design of multispecific
+	protein sequences using probabilistic graphical modeling. Proteins 75;3(2009
+	May 15):682-705.
+
+	\bibitem{Karmarkar} Komodakis, N.; Tziritas, G., "Approximate Labeling
+	via Graph Cuts Based on Linear Programming," Pattern Analysis and Machine
+	Intelligence, IEEE Transactions on , vol.29, no.8, pp.1436,1453, Aug. 2007
+	doi: 10.1109/TPAMI.2007.1061	
+	
+	
+	\end{thebibliography}
+
+\end{document}
+
