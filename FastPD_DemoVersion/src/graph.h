@@ -102,9 +102,9 @@ class Graph
 public:
 
 #ifdef _MANY_LABELS_
-	typedef int Label;
+	typedef long Label;
 #else
-	typedef unsigned char Label;
+	typedef int  Label;
 #endif
 
 	typedef enum
