@@ -115,7 +115,7 @@ public:
 
 	/* Type of edge weights.
 	   Can be changed to char, int, float, double, ... */
-	typedef int Real;
+	typedef long Real;
 	typedef Real captype;
 
 	/* Type of total flow */
