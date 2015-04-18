@@ -40,9 +40,10 @@ for i in xrange(len(LABELINGS)):
         LCOSTS[k*NUMPOINTS+i] = LABELINGS[i][k]
 
 #this is the most ridiculous loop comprehension I have ever written
-PAIRS = [item for sublist in [[(i, j)
-    for j in xrange(i+1, NUMPOINTS)]
-    for i in xrange(len(COSTS[0]))][:-1]
+PAIRS = [item
+    for sublist in [[(i, j)
+        for j in xrange(i+1, NUMPOINTS)]
+        for i in xrange(len(COSTS[0]))][:-1]
     for pair in sublist
     for item in pair]
 NUMPAIRS = len(PAIRS)/2
@@ -60,14 +61,19 @@ for i in xrange(len(COSTS)):
 WCOSTS = [1 for i in xrange(NUMPAIRS)]
 MAX_ITERS = 50
 
+PACK_LCOSTS = '=' + 'd'*len(LCOSTS)
+PACK_PAIRS = '=' + 'd'*len(PAIRS)
+PACK_DIST = '=' + 'd'*len(DIST)
+PACK_WCOSTS = '=' + 'd'*len(WCOSTS)
+
 OUT_FILE.write(struct.pack('=l', NUMPOINTS))
 OUT_FILE.write(struct.pack('=l', NUMPAIRS))
 OUT_FILE.write(struct.pack('=l', NUMLABELS))
 OUT_FILE.write(struct.pack('=l', MAX_ITERS))
-OUT_FILE.write(struct.pack('='+'d'*len(LCOSTS), *LCOSTS))
-OUT_FILE.write(struct.pack('='+'l'*len(PAIRS), *PAIRS))
-OUT_FILE.write(struct.pack('='+'d'*len(DIST), *DIST))
-OUT_FILE.write(struct.pack('='+'l'*len(WCOSTS), *WCOSTS))
+OUT_FILE.write(struct.pack(PACK_LCOSTS, *LCOSTS))
+OUT_FILE.write(struct.pack(PACK_PAIRS, *PAIRS))
+OUT_FILE.write(struct.pack(PACK_DIST, *DIST))
+OUT_FILE.write(struct.pack(PACK_WCOSTS, *WCOSTS))
 
 OUT_FILE.close()
 COST_FILE.close()
