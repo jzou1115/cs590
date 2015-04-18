@@ -1,0 +1,13 @@
+>> get_MRF_labeling results.bin
+
+ans = 
+
+	45
+	0
+	0
+	0
+	60
+	0
+	0
+	0
+

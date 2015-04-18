@@ -51,7 +51,7 @@ for i in xrange(len(costs)):
 		dist[j*numlabels + i] = costs[i][j]
 
 wcosts=[1 for i in xrange(numpairs)]
-max_iters=30
+max_iters=50
 
 out_file.write(struct.pack('=l', numpoints))
 out_file.write(struct.pack('=l', numpairs))

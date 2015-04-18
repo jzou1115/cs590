@@ -1,0 +1,9 @@
+>> get_MRF_labeling results.bin
+
+ans = 
+
+4
+0
+0
+0
+
