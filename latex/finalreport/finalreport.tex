@@ -144,7 +144,6 @@
 	
 	The FastPD algorithm utilizes the primal-dual schema in order to rapidly obtain
 	an $f$-approximation to the optimal solution. Given a primal program
-	
 	\begin{gather*}
 	\text{min }\textbf{c}^T\textbf{x} \\
 	\text{s.t. }\textbf{Ax} = \textbf{b}, \textbf{x} \geq 0
@@ -154,6 +153,7 @@
 	\text{max } \textbf{b}^T\textbf{y} \\
 	\text{s.t. }\textbf{A}^T\textbf{y} \leq \textbf{c} 
 	\end{gather*}		
+
 	The primal-dual principle states that if $\textbf{x}$ and $\textbf{y}$ are
 	solutions satisfying $\textbf{c}^T\textbf{x} \leq f \cdot \textbf{b}^T\textbf{y}$,
 	then $\textbf{x}$ is an $f$-approximation to the optimal solution $\textbf{x}*$.
@@ -163,6 +163,10 @@
 	each variable. The algorithm converges to an approximation factor
 	$f_{app} = 2 \frac{d_{max}}{d_{min}}$ where $d_{max}$ is the largest distance
 	between two labels and $d_{min}$ is the smallest distance between two labels. 
+	
+	Thus, the FastPD algorithm returns a conformation whose energy is an $f$-
+	approximation to the GMEC. This project aimed to test whether or not this would
+	be sufficiently accurate so as to produce useful results. 
 
 	\section{Results}
 	
