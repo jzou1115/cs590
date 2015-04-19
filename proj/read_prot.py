@@ -59,7 +59,14 @@ for i in xrange(len(COSTS)):
         DIST[j*NUMLABELS + i] = COSTS[i][j]
 
 WCOSTS = [1 for i in xrange(NUMPAIRS)]
-MAX_ITERS = 50
+MAX_ITERS = 100
+
+
+#make LCOSTS and DIST all positive
+MIN_L = min(LCOSTS)
+MIN_D = min(DIST)
+LCOSTS = [i+MIN_L for i in LCOSTS]
+DIST = [i+MIN_D if i != 0 else 0 for i in DIST]
 
 PACK_LCOSTS = '=' + 'd'*len(LCOSTS)
 PACK_PAIRS = '=' + 'l'*len(PAIRS)
