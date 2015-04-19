@@ -59,7 +59,7 @@ int main( int argc, char **argv )
 
 	// Save computed labels to output file
 	//
-	printf( "Writing labels to output file..." );
+	printf( "Writing labels to output file...\n" );
 	FILE *outf = fopen( argv[2], "wb" );
 	assert( outf );
 
@@ -68,7 +68,8 @@ int main( int argc, char **argv )
         printf("wrote node %i with label %i\n", i, &pd._pinfo[i]);
     }
 
-    printf("output label size is %lu\n", sizeof(Graph::Label));
+    printf("expect %i points\n", _numpoints);
+    printf("output label size is %lu\n", sizeof(Graph::Label)*8);
 
 	fclose(outf);
 	printf( "Done\n" );
