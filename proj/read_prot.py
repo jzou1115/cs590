@@ -1,83 +1,79 @@
+"""
+read_prot_long
+"""
+
 import struct
 import sys
-import numpy
 
-label_file = sys.argv[1]
-out_file = sys.argv[2]
+LABEL_FILE = sys.argv[1]
+OUT_FILE = sys.argv[2]
 
-cost_file=open(label_file, 'r')
-out_file=open(out_file, 'wb')
+COST_FILE = open(LABEL_FILE, 'r')
+OUT_FILE = open(OUT_FILE, 'wb')
 
-#read in rotamer counts per residue
-counts=map(int, cost_file.readline().split('\t'))
+#read in rotamer COUNTS per residue
+COUNTS = [int(x) for x in COST_FILE.readline().split('\t')]
 #get label-rotamer correspondence
-labels=cost_file.readline().split('\t')
+LABELS = COST_FILE.readline().split('\t')
 #unaltered pairwise energy matrix
-costs=[map(float,line.split('\t')) for line in cost_file]
+COSTS = [map(float, line.split('\t')) for line in COST_FILE]
 
-numpoints=len(counts)
-numlabels=len(labels)
+NUMPOINTS = len(COUNTS)
+NUMLABELS = len(LABELS)
 
-#get label costs from energy matrix
-internals=[costs[i][i] for i in xrange(len(costs))]
-labelings=[internals for i in xrange(numpoints)]
-for i in xrange(len(labelings)):
-	before=sum(counts[:i])
-	count=counts[i]
-	l = [2147483647 for x in xrange(before)]
-	l.extend(internals[before:before+count])
-	l.extend([2147483647 for x in xrange(before+count, numlabels)])
-	labelings[i]=l
+#get label COSTS from energy matrix
+INTERNALS = [COSTS[i][i] for i in xrange(len(COSTS))]
+LABELINGS = [INTERNALS for i in xrange(NUMPOINTS)]
+for i in xrange(len(LABELINGS)):
+    before = sum(COUNTS[:i])
+    count = COUNTS[i]
+    l = [2147483647 for x in xrange(before)]
+    l.extend(INTERNALS[before:before+count])
+    l.extend([2147483647 for x in xrange(before+count, NUMLABELS)])
+    LABELINGS[i] = l
 
 
-#move label costs to a 1-D array
-lcosts=[0 for i in xrange(numlabels*numpoints)]
-for i in xrange(len(labelings)):
-	for k in xrange(len(labelings[i])):
-		lcosts[k*numpoints+i]=labelings[i][k]
+#move label COSTS to a 1-D array
+LCOSTS = [0 for i in xrange(NUMLABELS*NUMPOINTS)]
+for i in xrange(len(LABELINGS)):
+    for k in xrange(len(LABELINGS[i])):
+        LCOSTS[k*NUMPOINTS+i] = LABELINGS[i][k]
 
 #this is the most ridiculous loop comprehension I have ever written
-pairs=[item for sublist in [[(i,j) for j in xrange(i+1, numpoints)] for i in xrange(len(costs[0]))][:-1] for pair in sublist for item in pair]
-numpairs=len(pairs)/2
+PAIRS = [item
+    for sublist in [[(i, j)
+        for j in xrange(i+1, NUMPOINTS)]
+        for i in xrange(len(COSTS[0]))][:-1]
+    for pair in sublist
+    for item in pair]
+NUMPAIRS = len(PAIRS)/2
 
-#remove label cost from pairwise costs
-for i in xrange(len(costs)):
-	costs[i][i] = 0
+#remove label cost from pairwise COSTS
+for i in xrange(len(COSTS)):
+    COSTS[i][i] = 0
 
-#move label costs to a 1-D array
-dist=[0 for i in xrange(numlabels*numlabels)]
-for i in xrange(len(costs)):
-	for j in xrange(len(costs[i])):
-		dist[j*numlabels + i] = costs[i][j]
+#move label COSTS to a 1-D array
+DIST = [0 for i in xrange(NUMLABELS*NUMLABELS)]
+for i in xrange(len(COSTS)):
+    for j in xrange(len(COSTS[i])):
+        DIST[j*NUMLABELS + i] = COSTS[i][j]
 
-wcosts=[1 for i in xrange(numpairs)]
-max_iters=30
+WCOSTS = [1 for i in xrange(NUMPAIRS)]
+MAX_ITERS = 50
 
-out_file.write(struct.pack('=l', numpoints))
-out_file.write(struct.pack('=l', numpairs))
-out_file.write(struct.pack('=l', numlabels))
-out_file.write(struct.pack('=l', max_iters))
-#out_file.write(struct.pack('='+'l'*len(lcosts), *lc))
+PACK_LCOSTS = '=' + 'd'*len(LCOSTS)
+PACK_PAIRS = '=' + 'l'*len(PAIRS)
+PACK_DIST = '=' + 'd'*len(DIST)
+PACK_WCOSTS = '=' + 'l'*len(WCOSTS)
 
-#TESTING - RESCALE LCOSTS TO PLAY NICE WITH 4-BYTE VALUES
-lc = lcosts[:]
-for i in lc:
-	i = max(round(i*100000000), -2147483646) if (i < 0) else min(round(i*100000000), 2147483647)
-	out_file.write(struct.pack('=l',i))
+OUT_FILE.write(struct.pack('=l', NUMPOINTS))
+OUT_FILE.write(struct.pack('=l', NUMPAIRS))
+OUT_FILE.write(struct.pack('=l', NUMLABELS))
+OUT_FILE.write(struct.pack('=l', MAX_ITERS))
+OUT_FILE.write(struct.pack(PACK_LCOSTS, *LCOSTS))
+OUT_FILE.write(struct.pack(PACK_PAIRS, *PAIRS))
+OUT_FILE.write(struct.pack(PACK_DIST, *DIST))
+OUT_FILE.write(struct.pack(PACK_WCOSTS, *WCOSTS))
 
-
-
-out_file.write(struct.pack('='+'l'*len(pairs), *pairs))
-
-#out_file.write(struct.pack('='+'l'*len(dist), *dist))
-
-#TESTING - RESCALE DIST TO PLAY NICE WITH 4-BYTE VALUES
-d = dist[:]
-for i in dist:
-	i = max(round(i*100000000), -2147483646) if (i < 0) else min(round(i*100000000), 2147483647)
-	out_file.write(struct.pack('=l',i))
-
-out_file.write(struct.pack('='+'l'*len(wcosts), *wcosts))
-
-out_file.close()
-cost_file.close()
+OUT_FILE.close()
+COST_FILE.close()

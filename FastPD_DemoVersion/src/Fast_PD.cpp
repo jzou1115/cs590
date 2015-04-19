@@ -65,8 +65,10 @@ int main( int argc, char **argv )
 
 	for( int i = 0; i < _numpoints; i++ ) {
 	 	fwrite( &pd._pinfo[i].label, sizeof(Graph::Label), 1, outf ); 
-        printf("label %i with value %i", i, pd._pinfo[i]);
+        printf("wrote node %i with label %i\n", i, &pd._pinfo[i]);
     }
+
+    printf("output label size is %lu\n", sizeof(Graph::Label));
 
 	fclose(outf);
 	printf( "Done\n" );
