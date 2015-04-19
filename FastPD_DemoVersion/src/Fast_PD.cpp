@@ -63,8 +63,10 @@ int main( int argc, char **argv )
 	FILE *outf = fopen( argv[2], "wb" );
 	assert( outf );
 
-	for( int i = 0; i < _numpoints; i++ )
-	 	fwrite( &pd._pinfo[i].label, sizeof(Graph::Label), 1, outf );  
+	for( int i = 0; i < _numpoints; i++ ) {
+	 	fwrite( &pd._pinfo[i].label, sizeof(Graph::Label), 1, outf ); 
+        printf("label %i with value %i", i, pd._pinfo[i]);
+    }
 
 	fclose(outf);
 	printf( "Done\n" );

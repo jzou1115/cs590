@@ -104,7 +104,7 @@ public:
 #ifdef _MANY_LABELS_
 	typedef long Label;
 #else
-	typedef int  Label;
+	typedef long Label;
 #endif
 
 	typedef enum

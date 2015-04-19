@@ -16,7 +16,7 @@ COUNTS = [int(x) for x in COST_FILE.readline().split('\t')]
 #get label-rotamer correspondence
 LABELS = COST_FILE.readline().split('\t')
 #unaltered pairwise energy matrix
-COSTS = [float(x) for x in line.split('\t') for line in COST_FILE]
+COSTS = [map(float, line.split('\t')) for line in COST_FILE]
 
 NUMPOINTS = len(COUNTS)
 NUMLABELS = len(LABELS)
