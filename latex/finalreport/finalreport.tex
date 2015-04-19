@@ -101,29 +101,69 @@
 	
 	\subsection{Optimizing the metric labeling problem}
 	The FastPD Markov Random Field optimization library 
-	(\cite{Karmarkar} and \cite{Komodakis}) was used in order to test the graph algorithm. 
-	The FastPD algorithm transforms the initial GL problem into the minimization of a linear program according to \cite{CKNZ}. 
+	(\cite{Karmarkar} and \cite{Komodakis}) was used in order to test the graph
+	algorithm. The FastPD algorithm transforms the initial GL problem into the
+	minimization of a linear program according to \cite{CKNZ}. 
+	
 	\begin{equation}
-	\begin{split}
-	min & \sum_{p \in V} \sum_{a\in L} c_p(a)x_p(a)+ \sum_{(p,q) \in E} w_{pq} \sum_{a,b \in L}d(a,b) x_{pq}(a,b)\\
-	s.t. & \sum_a x_p(a) =1 \qquad \forall p \in V\\
-	& \sum_a x_{pq}(a,b)=x_q(b) \qquad \forall b \in L, (p,q) \in E\\
-	& \sum_b x_{pq}(a,b)=x_p(a) \qquad \forall a \in L, (p,q) \in E
-	\end{split}
+		\begin{split}
+		min & \sum_{p \in V} \sum_{a\in L} c_p(a)x_p(a)+ \sum_{(p,q) \in E} w_{pq}
+		 \sum_{a,b \in L}d(a,b) x_{pq}(a,b)\\
+		s.t. & \sum_a x_p(a) =1 \qquad \forall p \in V\\
+		& \sum_a x_{pq}(a,b)=x_q(b) \qquad \forall b \in L, (p,q) \in E\\
+		& \sum_b x_{pq}(a,b)=x_p(a) \qquad \forall a \in L, (p,q) \in E
+		\end{split}
 	\label{linear}
 	\end{equation}
-	Equation \ref{linear} shows a formulation of an integer linear program, where $x_p(a)$ is a binary variable that indicates whether vertex p is assigned to label a, and $x_{pq}(a,b)$ indicates that vertices p and q are assigned the labels a and b.  The first constraint requires each vertex to be assigned to one label, and the other constraints maintains consistency between the labeled vertices and edges.
 	
-	Optimizing the cost of the metric labeling problem is NP-hard, and many approximation algorithms ($\alpha$-expansion, $\alpha$-$\beta$-swap) either assume metric distances that satisfy the triangle inequality or provide no guarantees about optimality.  Since pairwise interaction energies between protein residues are inherently nonmetric distances, these algorithms are not adequate for the protein design problem.  
+	Equation \ref{linear} shows a formulation of an integer linear program, where
+	$x_p(a)$ is a binary variable that indicates whether vertex p is assigned to
+	label a, and $x_{pq}(a,b)$ indicates that vertices p and q are assigned the
+	labels a and b.  The first constraint requires each vertex to be assigned to
+	one label, and the other constraints maintains consistency between the labeled
+	vertices and edges.
 	
-	FastPD only requires a nonmetric distance function that satisfies $d(a,b)$ such that $d(a,b)=0 \iff a=b$ and $d(a,b) \geq 0$.  Since the pairwise interaction energy between a residue and itself is zero, and all energies are greater than zero, this algorithm can be applied to the protein design problem.  
+	Optimizing the cost of the metric labeling problem is NP-hard, and many
+	approximation algorithms ($\alpha$-expansion, $\alpha$-$\beta$-swap) either
+	assume metric distances that satisfy the triangle inequality or provide no
+	guarantees about optimality.  Since pairwise interaction energies between
+	protein residues are inherently nonmetric distances, these algorithms are not
+	adequate for the protein design problem.  
 	
-	Relaxation of the integer linear program constraints transforms the NP-hard optimization problem into one that can be solvable in polynomial time.  The FastPD algorithm modifies the constraints to $s_p(\cdot) \ge 0$ and $x_{pq}(\cdot, \cdot) \ge 0$.  
+	FastPD only requires a nonmetric distance function that satisfies $d(a,b)$ such
+	that $d(a,b)=0 \iff a=b$ and $d(a,b) \geq 0$.  Since the pairwise interaction
+	energy between a residue and itself is zero, and all energies are greater than
+	zero, this algorithm can be applied to the protein design problem.  
 	
-	The primal-dual schema is subsequently used in order to rapidly obtain an $f$-approximation to the optimal solution, with graph-cuts being used to repeatedly refine approximations to the primal and dual solutions to the linear program minimization problem. 
+	Relaxation of the integer linear program constraints transforms the NP-hard
+	optimization problem into one that can be solvable in polynomial time.  The 
+	FastPD algorithm modifies the constraints to 
+	$s_p(\cdot) \ge 0$ and $x_{pq}(\cdot, \cdot) \ge 0$.  
+
+	\subsection{The Primal-Dual Schema}	
 	
-	explain weak duality?
+	The FastPD algorithm utilizes the primal-dual schema in order to rapidly obtain
+	an $f$-approximation to the optimal solution. Given a primal program
 	
+	\begin{gather*}
+	\text{min }\textbf{c}^T\textbf{x} \\
+	\text{s.t. }\textbf{Ax} = \textbf{b}, \textbf{x} \geq 0
+	\end{gather*}
+	the dual program can be formulated as follows:
+	\begin{gather*}
+	\text{max } \textbf{b}^T\textbf{y} \\
+	\text{s.t. }\textbf{A}^T\textbf{y} \leq \textbf{c} 
+	\end{gather*}		
+	The primal-dual principle states that if $\textbf{x}$ and $\textbf{y}$ are
+	solutions satisfying $\textbf{c}^T\textbf{x} \leq f \cdot \textbf{b}^T\textbf{y}$,
+	then $\textbf{x}$ is an $f$-approximation to the optimal solution $\textbf{x}*$.
+	FastPD starts with initial guesses for $\textbf{x}$ and $\textbf{y}$ and 
+	repeatedly improves them by making every variable in the program a node in the
+	graph and using a max-flow/min-cut algorithm to alter the assigned values to
+	each variable. The algorithm converges to an approximation factor
+	$f_{app} = 2 \frac{d_{max}}{d_{min}}$ where $d_{max}$ is the largest distance
+	between two labels and $d_{min}$ is the smallest distance between two labels. 
+
 	\section{Results}
 	
 	\begin{enumerate}
