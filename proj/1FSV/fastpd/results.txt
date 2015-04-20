@@ -1,6 +1,2 @@
->> get_MRF_labeling results.bin
-
-ans = 
-
 47
 56

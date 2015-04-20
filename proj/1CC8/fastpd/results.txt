@@ -1,7 +1,3 @@
->> get_MRF_labeling results.bin
-
-ans = 
-
 215
 317
 317
