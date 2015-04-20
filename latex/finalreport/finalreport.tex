@@ -101,7 +101,10 @@
 	small size and historical significance. The other two proteins, PDB IDs 1CC8 and
 	3F0Q, were chosen for their use as example proteins in the open-source OSPREY
 	software suite (as such, they had readily available data against which we could
-	compare our graph-based algorithm). For FSV1, positions 10 and 27 were allowed to mutated.  For 1CC8, positions 38-44 were allowed to mutate, and for DHFR only position 5 was allowed to mutate.  By selecting a range of maximum mutations, we were able to assess the scalability of the algorithm.
+	compare our graph-based algorithm). For FSV1, positions 10 and 27 were allowed to
+	mutated.  For 1CC8, positions 38-44 were allowed to mutate, and for DHFR only
+	position 5 was allowed to mutate.  By selecting a range of maximum mutations, we
+	were able to assess the scalability of the algorithm.
 	
 	\subsection{Generation of pairwise interaction matrices}
 	OSPREY (\cite{OS1}, \cite{OS2}) was used to generate pairwise interaction matrices
@@ -177,63 +180,69 @@
 	approximation to the GMEC. This project aimed to test whether or not this would
 	be sufficiently accurate so as to produce useful results. 
 
-\section{Results}
-After 100 iterations, FastPD assigned residues to selected positions.  In Tables \ref{dhfr}, \ref{1cc8}, and \ref{1fsv}, the results for these assignments are summarized.  The first column in each table contains the position to be optimized, and the second contains the assigned label.  The assigned label format indicates the amino acid and position assigned to the site ([amino acid]-[position]).  Many of the selected labels did not correspond to the correct position or interest, indicating limitations of the algorithm. 
-\begin{table}[h]
-\centering
-\caption{DHFR}
-\begin{tabular}{@{}cc@{}}
-\toprule
-\textbf{Position} & \textbf{Assigned Label} \\
-5        & Leu-0          \\ \bottomrule
-\end{tabular}
-\label{dhfr}
-\end{table}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{table}[t]
-\centering
-\caption{1CC8}
-\begin{tabular}{@{}cc@{}}
-\toprule
-\textbf{Position} & \textbf{Assigned Label} \\
-38        & Ser-2          \\
-39        & Val-6          \\
-40        & Val-6          \\
-41        & Ala-6          \\
-42        & Ley-6          \\
-43        & Ala-6          \\
-44        & Leu-6          \\ \bottomrule
-\end{tabular}
-\label{1cc8}
-\end{table}
-%%%%%%%%%%%%%%%%%
-
-\begin{table}[h]
-\centering
-\caption{1FSV}
-\begin{tabular}{@{}cc@{}}
-\toprule
-\textbf{Position} & \textbf{Assigned Label} \\
-10       & Glu-27         \\
-27       & His-27         \\ \bottomrule
-\end{tabular}
-\label{1fsv}
-\end{table}
-
-
+	\section{Results}
+	After 100 iterations, FastPD assigned residues to selected positions.  In Tables
+	\ref{dhfr}, \ref{1cc8}, and \ref{1fsv}, the results for these assignments are
+	summarized.  The first column in each table contains the position to be optimized,
+	and the second contains the assigned label. The $n$-th position corresponds to
+	the $n$-th residue in the amino acid chain. The assigned label format indicates
+	the amino acid and position assigned to the site ([amino acid]-[position]).  Many
+	of the selected labels did not correspond to the correct position or interest,
+	indicating limitations of the algorithm. 
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\begin{table}[h]
+	\centering
+	\caption{DHFR}
+	\label{dhfr}
+	\begin{tabular}{@{}cc@{}}
+	\toprule
+	\textbf{Position} & \textbf{Assigned Label} \\
+	5        & Leu-0          \\ \bottomrule
+	\end{tabular}
+	\end{table}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\begin{table}[t]
+	\centering
+	\caption{1CC8}
+	\label{1cc8}
+	\begin{tabular}{@{}cc@{}}
+	\toprule
+	\textbf{Position} & \textbf{Assigned Label} \\
+	38        & Ser-2          \\
+	39        & Val-6          \\
+	40        & Val-6          \\
+	41        & Ala-6          \\
+	42        & Ley-6          \\
+	43        & Ala-6          \\
+	44        & Leu-6          \\ \bottomrule
+	\end{tabular}
+	\end{table}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	\begin{table}[h]
+	\centering
+	\caption{1FSV}
+	\begin{tabular}{@{}cc@{}}
+	\toprule
+	\textbf{Position} & \textbf{Assigned Label} \\
+	10       & Glu-27         \\
+	27       & His-27         \\ \bottomrule
+	\end{tabular}
+	\label{1fsv}
+	\end{table}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	\subsection{Residue Labeling}
 	There were numerous problems with applying the FastPD algorithm to the protein
 	design problem. Most notably, for the 1FSV and 1CC8 proteins both resulted in
-	labels applied to the wrong residue (Tables \ref{1fsv}, \ref{1cc8}). For 1FSV, allowing mutations at residue
-	10 and 27 resulted in the algorithm attempting to place the glutamine reserved
-	for residue 27 at residue 10. While we did attempt to prevent this by increasing
-	the cost of applying a label to the wrong residue to the maximum value possible,
-	this strategy was evidently unsuccessful. 
+	labels applied to the wrong residue (Tables \ref{1cc8}, \ref{1fsv}). For 1FSV,
+	allowing mutations at residue 10 and 27 resulted in the algorithm attempting to
+	place the glutamine reserved for residue 27 at residue 10. While we did attempt to
+	prevent this by increasing the cost of applying a label to the wrong residue 
+	to the maximum value possible, this strategy was evidently unsuccessful. 
 	
 	The most likely cause of this is the $f$-approximation produced by the FastPD
-	algorithm, where $f = 2 \frac{d_{max}}{d_{min}}$, where the distance functions
+	algorithm, where $f = 2 \frac{d_{max}}{d_{min}}$ and the distance functions
 	represent pairwise interaction energies. Because the maximum pairwise interaction
 	energy would be immensely high (representing steric clash), and because the
 	minimum pairwise interaction energy would be extremely low (representing the 
