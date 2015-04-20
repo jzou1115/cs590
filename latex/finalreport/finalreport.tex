@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, booktabs}
 
 \title{\textbf{Novel Approaches to the Protein Design Problem}}
 \author{Adi Mukund \and Jennifer Zou}
@@ -168,15 +168,53 @@
 	approximation to the GMEC. This project aimed to test whether or not this would
 	be sufficiently accurate so as to produce useful results. 
 
-	\section{Results}
-	
-	\begin{enumerate}
-		\item DHFR
-		\item 1CC8
-		\item 1FSV\\
-		Position 10 got position 27's glutamine\\
-		Position 27 got position 27's histidine
-	\end{enumerate}
+\section{Results}
+After 100 iterations, FastPD assigned residues to selected positions.  In Tables \ref{dhfr}, \ref{1cc8}, and \ref{1fsv}, the results for these assignments are summarized.  The first column in each table contains the position to be optimized, and the second contains the assigned label.  The assigned label format indicates the amino acid and position assigned to the site ([amino acid]-[position]).  Many of the selected labels did not correspond to the correct position or interest, indicating limitations of the algorithm. 
+\begin{table}[h]
+\center
+\begin{tabular}{@{}ll@{}}
+\toprule
+DHFR     &                \\ \midrule
+\textbf{Position} & \textbf{Assigned Label} \\
+5        & Leu-0          \\ \bottomrule
+\end{tabular}
+\caption{FastPD assignments for DHFR}
+\label{dhfr}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[h]
+\center
+\begin{tabular}{@{}ll@{}}
+\toprule
+1CC8     &                \\ \midrule
+\textbf{Position} & \textbf{Assigned Label} \\
+0        & Ser-2          \\
+1        & Val-6          \\
+2        & Val-6          \\
+3        & Ala-6          \\
+4        & Ley-6          \\
+5        & Ala-6          \\
+6        & Leu-6          \\ \bottomrule
+\end{tabular}
+\caption{FastPD assignments for 1CC8}
+\label{1cc8}
+\end{table}
+%%%%%%%%%%%%%%%%%
+
+\begin{table}[h]
+\center
+\begin{tabular}{@{}ll@{}}
+\toprule
+1FSV     &                \\ \midrule
+\textbf{Position} & \textbf{Assigned Label} \\
+10       & glu-27         \\
+27       & his-27         \\ \bottomrule
+\end{tabular}
+\caption{FastPD assignments for 1FSV}
+\label{1fsv}
+\end{table}
+
 
 	\section{Limitations}
 	\subsection{F approximation error}
