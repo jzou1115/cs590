@@ -215,8 +215,8 @@ After 100 iterations, FastPD assigned residues to selected positions.  In Tables
 \begin{tabular}{@{}cc@{}}
 \toprule
 \textbf{Position} & \textbf{Assigned Label} \\
-10       & glu-27         \\
-27       & his-27         \\ \bottomrule
+10       & Glu-27         \\
+27       & His-27         \\ \bottomrule
 \end{tabular}
 \label{1fsv}
 \end{table}
