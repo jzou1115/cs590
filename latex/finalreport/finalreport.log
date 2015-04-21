@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.4.13)  20 APR 2015 18:03
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.4.13)  20 APR 2015 23:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -160,10 +160,10 @@ Missing character: There is no € in font cmr10!
 Missing character: There is no  in font cmr10!
  [8] [9] (./finalreport.aux) ) 
 Here is how much of TeX's memory you used:
- 1254 strings out of 494985
- 14078 string characters out of 6180356
- 65156 words of memory out of 5000000
- 4500 multiletter control sequences out of 15000+600000
+ 1255 strings out of 494985
+ 14084 string characters out of 6180356
+ 66156 words of memory out of 5000000
+ 4501 multiletter control sequences out of 15000+600000
  12626 words of font info for 47 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  27i,15n,26p,207b,207s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -179,7 +179,7 @@ xmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist
 /fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmti10.pfb>
-Output written on finalreport.pdf (9 pages, 154782 bytes).
+Output written on finalreport.pdf (9 pages, 155522 bytes).
 PDF statistics:
  82 PDF objects out of 1000 (max. 8388607)
  58 compressed objects within 1 object stream
